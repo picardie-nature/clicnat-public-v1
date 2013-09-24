@@ -100,6 +100,23 @@ function page_fiche_init() {
 		}
 	});
 	fiche_espece_onglet_actif("fiche_resume");
+	$('#btn_rech').click(function () {
+		$("#div_rech_espece").toggle(
+			function () {
+				var inp = $("#in_espece");
+				inp.autocomplete({source: '?page=autocomplete_espece',
+					select: function (event,ui) {
+						document.location.href = '?page=fiche&id='+ui.item.value;
+						event.target.value = '';
+						return false;
+					}
+				}).data("ui-autocomplete")._renderItem = function (ul,item) {
+					return $("<li>").append("<a>"+item.label+"</a>").appendTo(ul);
+				};
+				inp.focus();
+			}
+		);
+	});
 }
 
 $(document).ready(page_fiche_init);
@@ -170,6 +187,26 @@ $(document).ready(page_fiche_init);
 		{if $image_aff_ok eq 0}
 			Pas de photos pour illustrer cette fiche
 		{/if}
+	</div>
+	<div class="col-sm-6">
+		{if $espece->commentaire}
+			<h3>Présentation</h3>
+			<p>{$espece->commentaire}</p>
+		{/if}
+	</div>
+	<div class="col-sm-3">
+		{if $referentiel}
+			<span class="badge">Menace : {$referentiel.categorie}</span>
+			<span class="badge">Rareté : {$referentiel.indice_rar}</span>
+		{/if}
+		{if $espece->determinant_znieff}
+			<span class="badge">Espèce déterminante ZNIEFF</span>
+		{/if}
+		{if $espece->invasif}
+			<span class="badge">Invasive</span>
+		{/if}
+		
+		<p>Cette espèce est citée {$espece->get_nb_citations()} fois dans la base.</p>
 	</div>
 
 </div>
