@@ -44,11 +44,15 @@ function layer_repartition(id_espece) {
 }
 
 function layer_repartition_5ans(features) {
-	var b2 = 2013-5;
-	var b1 = 2013-10;
-	var l1 = new OpenLayers.Layer.Vector("avant "+b1, { projection: new OpenLayers.Projection("EPSG:2154") });
-	var l2 = new OpenLayers.Layer.Vector("entre "+b1+" et "+b2, { projection: new OpenLayers.Projection("EPSG:2154") });
-	var l3 = new OpenLayers.Layer.Vector("après "+b2, { projection: new OpenLayers.Projection("EPSG:2154") });
+	var y = 2013;
+	var b2 = y-5;
+	var b1 = y-10;
+	var stylemap1 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'red', strokeWidth:0});
+	var stylemap2 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'yellow', strokeWidth:0});
+	var stylemap3 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'green', strokeWidth:0});
+	var l1 = new OpenLayers.Layer.Vector("Répartition avant "+b1, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap1 });
+	var l2 = new OpenLayers.Layer.Vector("Répartition entre "+b1+" et "+b2, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap2 });
+	var l3 = new OpenLayers.Layer.Vector("Répartition entre "+b2+" et "+y, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap3 });
 	var carres_ids = {"p1":{},"p2":{},"p3":{}};
 	var carres_geoms = {"p1":[],"p2":[],"p3":[]};
 	for (var i=0; i<features.length; i++) {
@@ -85,10 +89,13 @@ function page_fiche_init() {
 			if (!carte) {
 				var id_espece = $('#espece').attr('id_espece');
 				carte = new Carto('carte');
+				carte.loading_update = function (e) {
+					console.log(this.nb_loading);	
+				};
 				var m  = carte.map;
-				var la= layer_repartition(id_espece);
-				m.addLayers([layer_repartition(id_espece)]);
-	//			m.addLayers(layer_repartition_5ans(la));
+				var la = layer_repartition(id_espece);
+				carte.registerloading(la);
+				m.addLayers([la]);
 			}
 		}
 	});
