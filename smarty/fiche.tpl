@@ -47,32 +47,74 @@ function layer_repartition_5ans(features) {
 	var y = 2013;
 	var b2 = y-5;
 	var b1 = y-10;
-	var stylemap1 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'red', strokeWidth:0});
-	var stylemap2 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'yellow', strokeWidth:0});
-	var stylemap3 = new OpenLayers.StyleMap({fillOpacity:0.5, fillColor: 'green', strokeWidth:0});
-	var l1 = new OpenLayers.Layer.Vector("Répartition avant "+b1, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap1 });
-	var l2 = new OpenLayers.Layer.Vector("Répartition entre "+b1+" et "+b2, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap2 });
-	var l3 = new OpenLayers.Layer.Vector("Répartition entre "+b2+" et "+y, { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: stylemap3 });
-	var carres_ids = {"p1":{},"p2":{},"p3":{}};
-	var carres_geoms = {"p1":[],"p2":[],"p3":[]};
+
+	var style = new OpenLayers.Style();
+	style.addRules([
+		new OpenLayers.Rule({
+			filter: new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: "periode",
+				value: 1
+			}),
+			symbolizer: {
+				fillOpacity:0.5,
+				fillColor: 'red',
+				strokeWidth:0
+			}
+		}),
+		new OpenLayers.Rule({
+			filter: new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: "periode",
+				value: 2
+			}),
+			symbolizer: {
+				fillOpacity:0.5,
+				fillColor: 'yellow',
+				strokeWidth:0
+			}
+		}),
+		new OpenLayers.Rule({
+			filter: new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: "periode",
+				value: 3
+			}),
+			symbolizer: {
+				fillOpacity:0.5,
+				fillColor: 'green',
+				strokeWidth:0
+			}
+		})
+	]);
+	var l = new OpenLayers.Layer.Vector("Répartition", { projection: new OpenLayers.Projection("EPSG:2154"), styleMap: style });
+
+	var pa = 1; // avant b2
+	var pb = 2; // b2 a b1
+	var pc = 3; // b1 a b
+
+	var carres = [];
+	var carres_index = {};
+
 	for (var i=0; i<features.length; i++) {
 		var y = parseInt(features[i].data["annee"]);
-		var id_carre = features[i].data["x0"]+"."+features[i].data["y0"];
-		var per = "p3";
+		var id_carre = features[i].data["x0"]+"-"+features[i].data["y0"];
+		var per = pc;
 		if (y < b1) {
-			per = "p1";
+			per = pa;
 		} else if (y >=b1 && y <= b2) {
-			per = "p2";
+			per = pb;
 		}
-		if (carres_ids[per][id_carre])
-			continue;
-		carres_ids[per][id_carre] = true;
-		carres_geoms[per].push(new OpenLayers.Feature.Vector(features[i].geometry.clone()));
+		if (carres_index[id_carre] == undefined) {
+			carres_index[id_carre] = carres.push(new OpenLayers.Feature.Vector(features[i].geometry.clone()))-1;
+			carres[carres_index[id_carre]].attributes.periode = per;
+		} else {
+			var old_per = carres[carres_index[id_carre]].attributes.periode;
+			carres[carres_index[id_carre]].attributes.periode = Math.max(old_per, per);
+		}
 	}
-	l3.addFeatures(carres_geoms["p3"]);
-	l2.addFeatures(carres_geoms["p2"]);
-	l1.addFeatures(carres_geoms["p1"]);
-	return [l1,l2,l3];
+	l.addFeatures(carres);
+	return [l];
 }
 
 var carte = false;
