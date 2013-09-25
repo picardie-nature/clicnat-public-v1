@@ -19,7 +19,7 @@
 			</p>
 		</div>
 	</div>
-	<div class="col-sm-6"  id="bloc-espece"> <!-- xxbloc xxbloc-espece"> -->
+	<div class="col-sm-6"  id="bloc-espece">
 		<p>
 		    <h3>Rechercher une espèce</h3>
 		    &nbsp;&nbsp;&gt;&nbsp;<input type="text" name="espece" id="espece" placeholder="Chouette"/><br/>
