@@ -347,12 +347,17 @@ $(document).ready(page_fiche_init);
 </div>
 <div class="row onglet_fiche_espece" id="fiche_biblio">
 	<div class="col-sm-12">
-		<div>
-			{foreach from=$docs item=article}
-				<p><a href="http://archives.picardie-nature.org/?action=lecteur&document={$article->id_biblio_document}#page{$article->premiere_page-1}" target="_blank">{$article->titre}</a> <small> paru dans <a href="http://archives.picardie-nature.org/?action=lecteur&document={$article->id_biblio_document}" target="_blank">{$article->titre_doc}</a></small></p>
-			{/foreach}
+		{section loop=$docs name=p step=2}
+		{assign var=article value=$docs[p]}
+		{assign var=index value=$smarty.section.p.index+1}
+		{assign var=articleb value=$docs[$index]}
+		<div class="row">
+			<div class="col-sm-6">{include file=_article_biblio.tpl article=$article}</div>
+			{if $articleb}
+			<div class="col-sm-6">{include file=_article_biblio.tpl article=$articleb}</div>
+			{/if}
 		</div>
-
+		{/section}
 	</div>
 </div>
 {literal}
