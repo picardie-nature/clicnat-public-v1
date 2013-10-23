@@ -52,7 +52,6 @@
 			</a>
 			{/foreach}
 		</div>
-
 	</div>
 	<div class="col-sm-9" id="liste">
 	{assign var=n value=0}

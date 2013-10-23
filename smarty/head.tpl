@@ -11,12 +11,14 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 	<link href="css/style.css?v={$smarty.now|date_format:"%d%m%Y%H"}" media="all" rel="stylesheet" type="text/css" />
-
+	<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
 </head>
 <body>
 	<script src="//code.jquery.com/jquery.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 	<script>
 	{literal}
 	//var J = jQuery.noConflict();
