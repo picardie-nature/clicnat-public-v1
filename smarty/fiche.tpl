@@ -406,7 +406,7 @@ $(document).ready(page_fiche_init);
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $n eq 0}
-			<p>Ce taxon est cité {$espece->get_nb_citations()} fois dans la base de données.</p>
+			<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations()} fois dans la base de données.</p>
 			{if $espece->ordre}
 				<p>Il appartient à l'ordre des {$espece->ordre}
 				{if $espece->famille}et à la famille des {$espece->famille}{/if}
@@ -418,51 +418,51 @@ $(document).ready(page_fiche_init);
 		<h1>Statut</h1>
 		{if $referentiel}
 		<table class="table">
-				{if $referentiel.statut_origine}
+			{if $referentiel.statut_origine}
 				<tr>
 					<td>Statut d'origine</td>
 					<td><a target="_blank" href="?page=definitions#gl_statut_org">{$referentiel.statut_origine}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.statut_bio}
+			{/if}
+			{if $referentiel.statut_bio}
 				<tr>
 					<td>Statut biologique</td>
 					<td><a target="_blank" href="?page=definitions#gl_statut_bio">{$referentiel.statut_bio}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.indice_rar}
+			{/if}
+			{if $referentiel.indice_rar}
 				<tr>
 					<td>Indice de rareté</td>
 					<td><a target="_blank" href="?page=definitions#gl_indice_rare">{$espece->get_indice_rar_lib($referentiel.indice_rar)}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.niveau_con}
+			{/if}
+			{if $referentiel.niveau_con}
 				<tr>
 					<td>Niveau de connaissance</td>
 					<td><a target="_blank" href="?page=definitions#gl_niveau_conn">{$referentiel.niveau_con}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.categorie}
+			{/if}
+			{if $referentiel.categorie}
 				<tr>
 					<td>Degré de menace</td>
 					<td><a target="_blank" href="?page=definitions#gl_statut_menace">{$espece->get_degre_menace_lib($referentiel.categorie)}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.etat_conv}
+			{/if}
+			{if $referentiel.etat_conv}
 				<tr>
 					<td>État de conservation</td>
 					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.etat_conv}</a></td>
 				</tr>
-				{/if}
-				{if $referentiel.prio_conv_cat}
+			{/if}
+			{if $referentiel.prio_conv_cat}
 				<tr>
 					<td>Priorité de conservation</td>
 					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.prio_conv_cat}</a></td>
 				</tr>
-				{/if}
-			</table>
+			{/if}
+		</table>
 		{else}
-			Ce taxon n'a pas été évalué.
+			Ce <a target="_blank" href="?page=definitions#gl_taxon">taxon</a> n'a pas été évalué.
 		{/if}
 	</div>
 </div>
@@ -612,6 +612,18 @@ $(document).ready(page_fiche_init);
 			</div>
 		</div>
 	</div>
+	{else}
+		<div class="row">
+			<div class="col-sm-12">
+				<h2>Répartition communale</h2>
+				<div class="container">
+					<div class="alert alert-warning">
+						<b>Pas de liste communale disponible !</b>
+						Ce taxon est considéré comme sensible, <a href="?page=definitions#gl_cachee" target="_blank">en savoir plus sur</a>.
+					</div>
+				</div>
+			</div>
+		</div>
 	{/if}
 </div>
 <div class="row onglet_fiche_espece" id="fiche_statut">
@@ -631,5 +643,5 @@ $(document).ready(page_fiche_init);
 		{/section}
 	</div>
 </div>
-<div style="clear:both;" class="info"> {include file="pas_exhaustif.tpl"} </div>
+{include file="pas_exhaustif.tpl"}
 {include file=foot.tpl}
