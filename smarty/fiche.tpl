@@ -343,11 +343,10 @@ $(document).ready(page_fiche_init);
 <div class="row">
 	<div class="col-sm-12">
 		<ul class="nav nav-tabs nav-justified">
-			<li class="active"><a class="b_onglets" href="#" onglet="fiche_resume">Présentation</a></li>
-			<li><a class="b_onglets" href="#" onglet="fiche_medias">Médias</a></li>
-			<li><a class="b_onglets" href="#" onglet="fiche_repartition">Répartition géographique</a></li>
-			<li><a class="b_onglets" href="#" onglet="fiche_statut">Statut</a></li>
-			<li><a class="b_onglets" href="#" onglet="fiche_biblio">Bibliographie</a></li>
+			<li class="active"><a class="b_onglets" href="#fiche_resume" onglet="fiche_resume">Présentation</a></li>
+			<li><a class="b_onglets" href="#fiche_medias" onglet="fiche_medias">Médias</a></li>
+			<li><a class="b_onglets" href="#fiche_repartition" onglet="fiche_repartition">Répartition géographique</a></li>
+			<li><a class="b_onglets" href="#fiche_biblio" onglet="fiche_biblio">Bibliographie</a></li>
 		</ul>
 	</div>
 </div>
@@ -367,14 +366,6 @@ $(document).ready(page_fiche_init);
 		{if $image_aff_ok eq 0}
 			Pas de photos pour illustrer cette fiche
 		{/if}
-	</div>
-	<div class="col-sm-6">
-		{if $espece->commentaire}
-			<h3>Présentation</h3>
-			<p>{$espece->commentaire}</p>
-		{/if}
-	</div>
-	<div class="col-sm-3">
 		{if $referentiel}
 			<span class="badge">Menace : {$referentiel.categorie}</span>
 			<span class="badge">Rareté : {$referentiel.indice_rar}</span>
@@ -386,9 +377,94 @@ $(document).ready(page_fiche_init);
 			<span class="badge">Invasive</span>
 		{/if}
 		
-		<p>Cette espèce est citée {$espece->get_nb_citations()} fois dans la base.</p>
+	</div>	
+	<div class="col-sm-6">
+		{assign var=n_texte value=0}
+		{if $espece->commentaire}
+			<h1>Répartition régionale</h1>
+			<div>{$espece->commentaire}</div>
+			{assign var=n_texte value=$n_texte+1}
+		{/if}
+		{if $espece->habitat}
+			<h1>Habitat principal</h1>
+			<div>{$espece->habitat}</div>
+			{assign var=n_texte value=$n_texte+1}
+		{/if}
+		{if $espece->menace}
+			<h1>Menaces potentielles</h1>
+			<div>{$espece->menace}</div>
+			{assign var=n_texte value=$n_texte+1}
+		{/if}
+		{if $espece->action_conservation}
+			<h1>Actions de conservation</h1>
+			<div>{$espece->action_conservation}</div>
+			{assign var=n_texte value=$n_texte+1}
+		{/if}
+		{if $espece->commentaire_statut_menace}
+			<h1>Commentaires sur le statut de menace</h1>
+			<div>{$espece->commentaire_statut_menace}</div>
+			{assign var=n_texte value=$n_texte+1}
+		{/if}
+		{if $n eq 0}
+			<p>Ce taxon est cité {$espece->get_nb_citations()} fois dans la base de données.</p>
+			{if $espece->ordre}
+				<p>Il appartient à l'ordre des {$espece->ordre}
+				{if $espece->famille}et à la famille des {$espece->famille}{/if}
+			{/if}
+		{/if}
 	</div>
 
+	<div class="col-sm-3">
+		<h1>Statut</h1>
+		{if $referentiel}
+		<table class="table">
+				{if $referentiel.statut_origine}
+				<tr>
+					<td>Statut d'origine</td>
+					<td><a target="_blank" href="?page=definitions#gl_statut_org">{$referentiel.statut_origine}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.statut_bio}
+				<tr>
+					<td>Statut biologique</td>
+					<td><a target="_blank" href="?page=definitions#gl_statut_bio">{$referentiel.statut_bio}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.indice_rar}
+				<tr>
+					<td>Indice de rareté</td>
+					<td><a target="_blank" href="?page=definitions#gl_indice_rare">{$espece->get_indice_rar_lib($referentiel.indice_rar)}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.niveau_con}
+				<tr>
+					<td>Niveau de connaissance</td>
+					<td><a target="_blank" href="?page=definitions#gl_niveau_conn">{$referentiel.niveau_con}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.categorie}
+				<tr>
+					<td>Degré de menace</td>
+					<td><a target="_blank" href="?page=definitions#gl_statut_menace">{$espece->get_degre_menace_lib($referentiel.categorie)}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.etat_conv}
+				<tr>
+					<td>État de conservation</td>
+					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.etat_conv}</a></td>
+				</tr>
+				{/if}
+				{if $referentiel.prio_conv_cat}
+				<tr>
+					<td>Priorité de conservation</td>
+					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.prio_conv_cat}</a></td>
+				</tr>
+				{/if}
+			</table>
+		{else}
+			Ce taxon n'a pas été évalué.
+		{/if}
+	</div>
 </div>
 <div class="row onglet_fiche_espece" id="fiche_medias">
 	<div class="col-sm-12">
@@ -539,75 +615,6 @@ $(document).ready(page_fiche_init);
 	{/if}
 </div>
 <div class="row onglet_fiche_espece" id="fiche_statut">
-	<div class="col-sm-6">
-		<h1>Statut</h1>
-		<table class="table">
-				{if $referentiel.statut_origine}
-				<tr>
-					<td>Statut d'origine</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_org">{$referentiel.statut_origine}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.statut_bio}
-				<tr>
-					<td>Statut biologique</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_bio">{$referentiel.statut_bio}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.indice_rar}
-				<tr>
-					<td>Indice de rareté</td>
-					<td><a target="_blank" href="?page=definitions#gl_indice_rare">{$espece->get_indice_rar_lib($referentiel.indice_rar)}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.niveau_con}
-				<tr>
-					<td>Niveau de connaissance</td>
-					<td><a target="_blank" href="?page=definitions#gl_niveau_conn">{$referentiel.niveau_con}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.categorie}
-				<tr>
-					<td>Degré de menace</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_menace">{$espece->get_degre_menace_lib($referentiel.categorie)}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.etat_conv}
-				<tr>
-					<td>État de conservation</td>
-					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.etat_conv}</a></td>
-				</tr>
-				{/if}
-				{if $referentiel.prio_conv_cat}
-				<tr>
-					<td>Priorité de conservation</td>
-					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.prio_conv_cat}</a></td>
-				</tr>
-				{/if}
-			</table>
-	</div>
-	<div class="col-sm-6">
-		{if $espece->commentaire}
-			<h1>Répartition régionale</h1>
-			<div>{$espece->commentaire}</div>
-		{/if}
-		{if $espece->habitat}
-			<h1>Habitat principal</h1>
-			<div>{$espece->habitat}</div>
-		{/if}
-		{if $espece->menace}
-			<h1>Menaces potentielles</h1>
-			<div>{$espece->menace}</div>
-		{/if}
-		{if $espece->action_conservation}
-			<h1>Actions de conservation</h1>
-			<div>{$espece->action_conservation}</div>
-		{/if}
-		{if $espece->commentaire_statut_menace}
-			<h1>Commentaires sur le statut de menace</h1>
-			<div>{$espece->commentaire_statut_menace}</div>
-		{/if}
-	</div>
 </div>
 <div class="row onglet_fiche_espece" id="fiche_biblio">
 	<div class="col-sm-12">
