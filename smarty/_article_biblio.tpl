@@ -1,7 +1,7 @@
 {assign var=url_biblio value="http://archives.picardie-nature.org"}
 <div class="media">
 	<a href="{$url_biblio}/?action=lecteur&document={$article->id_biblio_document}#page{$article->premiere_page-1}" target="_blank" class="pull-left">
-		<img src="{$url_biblio}/?action=page&document={$article->id_biblio_document}&w=160&n={$article->premiere_page-1}"/>
+		<img src="{$url_biblio}/?action=page&document={$article->id_biblio_document}&w=160&n={$article->premiere_page-1}" class="ombre"/>
 	</a>
 	<div class="media-body">
 		<h4 class="media-heading">{$article->titre}</h4>
