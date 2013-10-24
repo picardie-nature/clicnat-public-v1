@@ -619,7 +619,7 @@ $(document).ready(page_fiche_init);
 				<div class="container">
 					<div class="alert alert-warning">
 						<b>Pas de liste communale disponible !</b>
-						Ce taxon est considéré comme sensible, <a href="?page=definitions#gl_cachee" target="_blank">en savoir plus sur</a>.
+						Ce taxon est considéré comme sensible, <a href="?page=definitions#gl_cachee" target="_blank">en savoir plus</a>.
 					</div>
 				</div>
 			</div>

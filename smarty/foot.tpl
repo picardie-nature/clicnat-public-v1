@@ -20,7 +20,7 @@
 			</ul>
 			<ul>
 				<li><a href="http://www.picardie-nature.org">Picardie-Nature</a></li>
-				<li><a href="http://www.fne.org">Membre de FNE</a></li>
+				<li><a href="http://www.fne.asso.fr">Membre de FNE</a></li>
 			</ul>
 			<div class="text-center">
 				<img alt="AGPL V3" style="border-width:0" src="http://www.gnu.org/graphics/agplv3-155x51.png" />
