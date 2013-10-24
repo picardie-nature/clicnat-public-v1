@@ -37,7 +37,6 @@ class Promontoire extends clicnat_smarty {
     
 	public function __construct($db) {
 		setlocale(LC_ALL, LOCALE);	
-		//($db, $template_dir, $compile_dir, $config_dir)
 		parent::__construct($db, SMARTY_TEMPLATE_PROMONTOIRE2, SMARTY_COMPILE_PROMONTOIRE2, SMARTY_CACHEDIR_PROMONTOIRE2, '/tmp/clicnat_cache_public');
 		$this->assign('niveau_restitution', bobs_espece::restitution_public);
 	}
@@ -56,7 +55,6 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('titre_page', $espece);
 		$this->assign('borne_a', intval(strftime("%Y"))-5);
 		$this->assign('borne_b', intval(strftime("%Y"))-10);
-		//$this->assign('key', IGN_KEY_PROMONTOIRE2);
 		$f = fopen(sprintf("http://10.10.0.7/biblio/?action=liste_articles_espece_json&id_espece=%d", $_GET['id']),"r");
 		if ($f) {
 			$data = '';
@@ -79,14 +77,13 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('ls', $especes);
 	}
 
-	protected function before_carte_points_noirs() {
-	}
 	protected function before_carte_wfs() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
 		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
 		$this->assign_by_ref("travail", $travail);
 	}
+
 	protected function before_carte_wms() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
@@ -117,198 +114,6 @@ class Promontoire extends clicnat_smarty {
 		exit();
 	}
 
-	/**
-	 * FIXME : doit disparaitre
-	 *
-	protected function before_fiche_atlas()
-	{
-		bobs_element::cli($_GET['id']);
-		require_once(OBS_DIR.'espece.php');
-		require_once(OBS_DIR.'espace.php');
-		$espece = get_espece($this->db, $_GET['id']);
-		$espece->get_atlas_img();
-		exit();
-	}
-	 */
-	/**
-	 * FIXME : doit disparaitre
-	 *
-	protected function before_json_atlas()
-	{		
-		require_once(OBS_DIR.'espece.php');
-		$espece = get_espece($this->db, $_GET['id']);
-		if ($espece->get_restitution_ok(bobs_espece::restitution_public)) {
-			$fname = sprintf("/atlas/%d/data.json", $espece->id_espece);
-			if (file_exists($fname))
-				readfile($fname);
-			else {
-				die('// fichier introuvable');
-			}
-		} else {
-				die('// non visible');
-		}
-		exit();
-	}
-	 */
-	const minx = 528113;
-	const miny = 6850320;
-	const maxx = 845493;
-	const maxy = 7057217;
-
-	const west_lon = '0.66';
-	const east_lon = '5.05';
-	const south_lat = '48.73';
-	const north_lat = '50.6';
-
-	protected function before_ms_atlas() {
-		bobs_element::cli($_GET['ID_ESPECE']);
-		foreach ($_GET as $k => $v) {
-			if (strcasecmp($k, 'request') == 0) {
-				$request = $_GET[$k];
-			}
-		}
-		switch ($request) {
-			case 'GetMap':
-				$args = $_SERVER['QUERY_STRING'];
-				$width = $_GET['WIDTH'];
-				$height = $_GET['HEIGHT'];
-				$bbox = $_GET['BBOX'];
-				$transparent = $_GET['TRANSPARENT'];
-				$format = $_GET['FORMAT'];
-				switch ($format) {
-					case 'image/png':
-						$format = 'image%2Fpng';
-						break;
-					default:
-						$format = 'image%2Fjpeg';
-						break;
-				}
-				$srs = 'EPSG%3A2154';
-
-				if ($_GET['CRS'] == 'EPSG:27572')
-					$srs = 'EPSG%3A27572';
-				else if ($_GET['CRS'] == 'EPSG:900913')
-					$srs = 'EPSG%3A900913';
-
-				if (strtolower($transparent) != 'true') {
-					$transparent = 'false';
-				}
-
-				if (isset($_GET['ID_ESPECE'])) {
-					$layers = "LAYERS=foret%2Cmer%2Cgrille%2Climite_adm%2Cnom_communes%2CATLAS%3A{$_GET['ID_ESPECE']}";
-				} else {
-					if (preg_match('/^ATLAS:(\d+)/', $_GET['LAYERS'], $m)) {
-						$layers = sprintf("LAYERS=ATLAS%%3A%d", $m[1]);
-					} else {
-						throw new Exception('match layers : '.$_GET['LAYERS']);
-					}
-				}
-				$url = "http://localhost/cgi-bin/mapserv?map=/carto/atlas.map&{$layers}&FORMAT=$format&TRANSPARENT=$transparent&DPI=96&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=$srs&BBOX=$bbox&WIDTH=$width&HEIGHT=$height";
-				$ch = curl_init();
-
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	   
-				$output = curl_exec($ch);
-
-				if (!empty($output)) {
-					header('Content-type: '.curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-					echo $output;
-				} else {
-					echo $url;
-				}
-				curl_close($ch);
-				exit();
-			case 'GetCapabilities':
-				$classes = bobs_espece::get_classes();
-				header("Content-Type:text/xml");  
-				$doc = new DOMDocument('1.0');
-				$doc->formatOutput = true;
-				$wms = $doc->createElement('WMS_Capabilities');
-				$wms->setAttribute('version', '1.3.0');
-				$service = $doc->createElement('Service');
-				$service->appendChild($doc->createElement('Name', 'WMS'));
-				$service->appendChild($doc->createElement('Title', 'Clicnat WMS Service'));
-
-				$capa = $doc->createElement('Capability');
-
-				$req = $doc->createElement('Request');
-				$get_capa = $doc->createElement('GetCapabilities');
-				$get_map = $doc->createElement('GetMap');
-				$get_map->appendChild($doc->createElement('Format', 'image/jpeg'));
-				$get_map->appendChild($doc->createElement('Format', 'image/png'));
-
-				$req->appendChild($get_capa);
-				$req->appendChild($get_map);
-
-				$capa->appendChild($req);
-				//$url = 'http://devel.picardie-nature.org/promontoire/index.php?ID_ESPECE=%d&PAGE=ms_atlas';
-
-				foreach ($classes as $cl) {
-					$p_layer = $doc->createElement('Layer');
-					
-					$p_layer->appendChild($doc->createElement('Title', bobs_espece::get_classe_lib_par_lettre($cl)));
-					$p_layer->appendChild($doc->createElement('CRS', 'EPSG:2154'));
-					$bbox = $doc->CreateElement('BoundingBox');
-					$bbox->setAttribute('CRS', 'EPSG:2154');
-					$bbox->setAttribute('minx', self::minx);
-					$bbox->setAttribute('miny', self::miny);
-					$bbox->setAttribute('maxx', self::maxx);
-					$bbox->setAttribute('maxy', self::maxy);
-					$p_layer->appendChild($bbox);
-					$ex_bbox = $doc->createElement('EX_GeographicBoundingBox');
-					$ex_bbox->appendChild($doc->createElement('westBoundLongitude', self::west_lon));
-					$ex_bbox->appendChild($doc->createElement('eastBoundLongitude', self::east_lon));
-					$ex_bbox->appendChild($doc->createElement('southBoundLatitude', self::south_lat));
-					$ex_bbox->appendChild($doc->createElement('northBoundLatitude', self::north_lat));
-					$p_layer->appendChild($ex_bbox);
-					foreach (bobs_espece::get_liste_par_classe($this->db, $cl) as $esp) {
-						if ($esp->get_atlas()) {
-							$layer = $doc->createElement('Layer');
-							$layer->appendChild($doc->createElement('Name', "ATLAS:{$esp->id_espece}"));
-							$title = $doc->createElement('Title');
-							$title->appendChild($doc->createTextNode("Répartition de {$esp} en Picardie"));
-							$layer->appendChild($title);
-							$bbox = $doc->CreateElement('BoundingBox');
-							$bbox->setAttribute('CRS', 'EPSG:2154');
-							$bbox->setAttribute('minx', self::minx);
-							$bbox->setAttribute('miny', self::miny);
-							$bbox->setAttribute('maxx', self::maxx);
-							$bbox->setAttribute('maxy', self::maxy);
-							$layer->appendChild($bbox);
-							//$layer->appendChild($doc->createElement('DataURL', sprintf($url, $esp->id_espece)));
-							/*$layer_url = $doc->createElement('DataURL');
-							$online_r = $doc->createElement('OnlineResource');
-							$online_r->setAttribute('xlink:type', 'simple');
-							$online_r->setAttribute('xlink:href', sprintf($url, $esp->id_espece));
-							$online_r->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-							$layer_url->appendChild($online_r);
-							$layer->appendChild($layer_url);*/
-							$layer->appendChild($doc->createElement('CRS', 'EPSG:2154'));
-							$layer->appendChild($doc->createElement('CRS', 'EPSG:27572'));
-							$layer->appendChild($doc->createElement('CRS', 'EPSG:900913'));
-							$p_layer->appendChild($layer);	
-							$ex_bbox = $doc->createElement('EX_GeographicBoundingBox');
-							$ex_bbox->appendChild($doc->createElement('westBoundLongitude', self::west_lon));
-							$ex_bbox->appendChild($doc->createElement('eastBoundLongitude', self::east_lon));
-							$ex_bbox->appendChild($doc->createElement('southBoundLatitude', self::south_lat));
-							$ex_bbox->appendChild($doc->createElement('northBoundLatitude', self::north_lat));
-							$p_layer->appendChild($ex_bbox);
-						} 
-					} 
-					$capa->appendChild($p_layer);
-				}
-				$wms->appendChild($service);
-				$wms->appendChild($capa);
-				$doc->appendChild($wms);
-				echo @$doc->saveXML();
-				exit();
-			break;
-		default:
-			throw new Exception('request = GetMap ou GetCapabilities :'.$request);
-		}
-	}
-
-
 	protected function before_ms_communes() {	
 		$args = $_SERVER['QUERY_STRING'];
 		$width = $_GET['WIDTH'];
@@ -332,8 +137,7 @@ class Promontoire extends clicnat_smarty {
 	    exit();
 	}
 	
-	protected function before_geocode()
-	{
+	protected function before_geocode() {
 		require_once(OBS_DIR.'espace.php');
 		bobs_element::cli($_GET['lat']);
 		bobs_element::cli($_GET['lon']);
@@ -342,8 +146,7 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('commune',$c);
 	}
 
-	protected function before_geocode_lien()
-	{
+	protected function before_geocode_lien() {
 		require_once(OBS_DIR.'espace.php');
 		bobs_element::cls($_GET['lat']);
 		bobs_element::cls($_GET['lon']);
@@ -398,22 +201,6 @@ class Promontoire extends clicnat_smarty {
 		parent::display('commune.tpl', $espace->id_espace);
 		exit();
 	}
-
-	/*
-	// deplacé dans smarty.php
-	protected function before_autocomplete_commune()
-	{
-		bobs_element::cls($_GET['term']);
-		require_once(OBS_DIR.'espace.php');
-		$t = bobs_espace_commune::rechercher($this->db, array("nom" => $_GET['term']));
-		$tt = array();
-		if (is_array($t))
-		foreach ($t as $l)
-		    $tt[] = array('label'=>sprintf('%s (%02d)',$l->nom,$l->dept), 'value'=>$l->id_espace);
-		echo json_encode($tt);
-		exit();
-	}
-	*/
 
 	/**
 	 * @brief liste des espèces en liste rouge
