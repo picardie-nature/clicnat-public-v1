@@ -41,11 +41,17 @@ div.onglet_fiche_espece {
 }
 </style>
 <script>
+// Variables globales
+var carte = false;
+var position_annee = 0;
+var annees = false;
+var annees_auto = false;
+
 function fiche_espece_onglet_actif(id) {
 	$('.onglet_fiche_espece').hide();
 	$('#'+id).show();
 }
-var annees = false;
+
 function layer_repartition(id_espece) {
 	var resolution = 5000;
 	var l = new OpenLayers.Layer.Vector("Répartition par année", {
@@ -84,7 +90,7 @@ function layer_repartition_5ans(features) {
 				value: 1
 			}),
 			symbolizer: {
-				fillOpacity:0.5,
+				fillOpacity:0.8,
 				fillColor: 'red',
 				strokeWidth:0
 			}
@@ -96,7 +102,7 @@ function layer_repartition_5ans(features) {
 				value: 2
 			}),
 			symbolizer: {
-				fillOpacity:0.5,
+				fillOpacity:0.8,
 				fillColor: 'yellow',
 				strokeWidth:0
 			}
@@ -108,7 +114,7 @@ function layer_repartition_5ans(features) {
 				value: 3
 			}),
 			symbolizer: {
-				fillOpacity:0.5,
+				fillOpacity:0.8,
 				fillColor: 'green',
 				strokeWidth:0
 			}
@@ -152,9 +158,8 @@ function layer_repartition_5ans(features) {
 	return [l];
 }
 
-var carte = false;
 function annees_style(y) {
-	var style = new OpenLayers.Style({fillColor: 'yellow'});
+	var style = new OpenLayers.Style();
 	style.addRules([
 		new OpenLayers.Rule({
 			filter: new OpenLayers.Filter.Comparison({
@@ -163,7 +168,7 @@ function annees_style(y) {
 				value: y
 			}),
 			symbolizer: {
-				fillOpacity:0.5,
+				fillOpacity:0.8,
 				fillColor: 'green',
 				strokeWidth:0
 			}
@@ -250,6 +255,7 @@ function page_fiche_init() {
 		var c = $(this);
 		switch (c.attr('name')) {
 			case 'l':
+				annees_auto = false;
 				var oldlayer = null;
 				var newlayer = null;
 				if (c.attr('id') == 'annee') {
@@ -259,8 +265,13 @@ function page_fiche_init() {
 					oldlayer = carte.map.getLayersByName("Répartition par année")[0];
 					newlayer = carte.map.getLayersByName("Pas de 5 ans")[0];
 				}
+
 				oldlayer.setVisibility(false);
 				newlayer.setVisibility(true);
+
+				$('#legende-5ans').toggle();
+				$('#legende-annee').toggle();
+
 				$('#adeb').html(annees[0]);
 				$('#afin').html(annees[annees.length-1]);
 				break;
@@ -276,21 +287,31 @@ function page_fiche_init() {
 	});
 	$(".btn_change_annee").click( function () {
 		var btn = $(this);
-		var min = parseInt($('#adeb').html());
-		var max = parseInt($('#afin').html());
-		var annee = parseInt($("#a").html());
 		var sens = btn.attr('sens');
 
-		if (!annee) annee = annees[0];
+		if (sens == "auto") {
+			annees_auto = !annees_auto;
+			return false;
+		}
 
-		if ((sens == "+") && (annee < max))
-			annee++;
-		if ((sens == "-") && (annee > min))
-			annee--;
+		if ((sens == "+") && (position_annee < (annees.length-1)))
+			position_annee++;
+		if ((sens == "-") && (position_annee > 0))
+			position_annee--;
 
-		annees_set_annee(annee);
+		annees_set_annee(annees[position_annee]);
+
 		return false;
 	});
+
+	window.setInterval(function () {
+			if (annees_auto) {
+				position_annee = (position_annee+1)%annees.length;
+				annees_set_annee(annees[position_annee]);
+			}
+		},
+		1500
+	);
 }
 
 $(document).ready(page_fiche_init);
@@ -406,12 +427,17 @@ $(document).ready(page_fiche_init);
 					<span style="background-color:yellow;">&nbsp;&nbsp;&nbsp;</span> Dernière observation datant de - de 10 ans<br/>
 					<span style="background-color:red;">&nbsp;&nbsp;&nbsp;</span> Dernière observation datant de + de 10 ans
 				</div>
-				<div id="legende-annee" class="clegende">
+				<div id="legende-annee" class="clegende" style="display:none;">
+					<h4>Légende</h4>
+					<div>Utiliser les flèches pour changer l'année affichée</div>
 					<ul class="pagination">
 						<li><a href="#" class="btn_change_annee" sens="-">&laquo;</a></li>
 						<li class="disabled"><a id="adeb" href="#">xxxx</a></li>
 						<li class="active"><a href="#" id="a" >xxxx</a></li>
 						<li class="disabled"><a id="afin" href="#">xxxx</a></li>
+						<li><a href="#" class="btn_change_annee" sens="auto" title="changement année automatique">
+							<span class="glyphicon glyphicon-repeat"></span>
+						</a></li>
 						<li><a href="#" class="btn_change_annee" sens="+">&raquo;</a></li>
 					</ul>
 				</div>
