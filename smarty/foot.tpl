@@ -1,43 +1,68 @@
-</div></div>
-
-<div id="xxbloc-bas" class="container">
-	<div class="row">
-		<div id="logos">
-			<a href="http://www.europa.eu" target="_blank" title="Union européenne"><div id="logo_europe" class="hoverscroll"></div></a>
-			<a href="http://www.developpement-durable.gouv.fr/" target="_blank"><div id="logo_dreal" class="hoverscroll"></div></a>
-			<a href="http://www.picardie.fr/" target="_blank"><div id="logo_cr" class="hoverscroll"></div></a>
-			<a href="http://www.cg02.fr" target="_blank"><div id="logo_cg02" class="hoverscroll"></div></a>
-			<a href="http://www.cg80.fr" target="_blank"><div id="logo_cg80" class="hoverscroll"></div></a>
-			<a href="http://www.amiens.fr" target="_blank"><div id="logo_amiens" class="hoverscroll"></div></a>
+<style>
+	{literal}
+	.pied a { color: white ! important; }
+	#pied-cont { padding-top: 30px; color:#ccc; }
+	#pied { padding-bottom:50px; background-color:#AAA396; background-color:#999; font-size:12px; }
+	{/literal}
+</style>
+<div class="row" id="pied" >
+	<div id="pied-cont">
+		<div class="col-sm-3 pied">
+			<ul>
+				<li><a href="?page=cn" target="_blank">Charte de l'observateur</a></li>
+				<li><a href="?page=ml" target="_blank">Mentions légales</a></li>
+			</ul>
+			<ul>
+				<li><a href="http://poste.obs.picardie-nature.org">Saisie en ligne</a></li>
+				<li><a href="http://clicnat.picardie-nature.org">Blog</a></li>
+				<li><a href="https://github.com/picardie-nature/">Code source</a></li>
+				<li><a href="http://fiche.obs.picardie-nature.org">Édition des fiches espèces</a></li>
+			</ul>
+			<ul>
+				<li><a href="http://www.picardie-nature.org">Picardie-Nature</a></li>
+				<li><a href="http://www.fne.asso.fr">Membre de FNE</a></li>
+			</ul>
+			<div class="text-center">
+				<img alt="AGPL V3" style="border-width:0" src="http://www.gnu.org/graphics/agplv3-155x51.png" />
+			</div>
 		</div>
-
-	<!-- 
-	<div id="b-bas-1">
-        	<div id="b-bas-eas-cont">
-		        <span id="b-bas-eas"> La faune sauvage en un clic pour tous les Picards !  </span>
-  		</div>
-	</div>
-	-->
-	<div id="b-bas-2">&nbsp;</div>
-	<div id="b-bas-4">
-		<p>
-			<a href="?page=cn" target="_blank">Charte de l'observateur</a> -
-			<a href="?page=ml" target="_blank">Mentions légales</a>
-		</p> 
-		<p>
-			<small>Clicnat est un logiciel libre de partage des données naturalistes développé 
+		<div class="col-sm-3 pied">
+			<p>Lancé depuis 2009, Clicnat est un logiciel libre de partage des données naturalistes développé 
 			et hebergé par <a href="http://www.picardie-nature.org/" target="_blank">Picardie Nature</a>
-			sous licence <a href ="http://www.gnu.org/licenses/agpl-3.0.html"><br/>
-			<img alt="AGPL V3" style="border-width:0" src="http://www.gnu.org/graphics/agplv3-155x51.png" /></a>
-		</p>
-		<p>
-			<a href="http://www.picardie-nature.org/" target="_blank">Picardie Nature</a> est une association
-			 régionale de protection de la Nature et de l'Environnement en Picardie</small>
-		</p>
+			sous licence <a href ="http://www.gnu.org/licenses/agpl-3.0.html"> AGL - V3</a>.</p>
+			<p><a href="http://www.picardie-nature.org/" target="_blank">Picardie Nature</a> est une association
+			régionale de protection de la Nature et de l'Environnement en Picardie</small></p>
+			<p>Clicnat : La faune sauvage en un clic pour tous les Picards ! </p>
+
+
+		</div>
+		<div class="col-sm-3">
+			<div class="text-center">
+				<a href="http://www.europa.eu" target="_blank" title="Union européenne"><div id="logo_europe" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
+				<a href="http://www.developpement-durable.gouv.fr/" target="_blank"><div id="logo_dreal" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
+				<a href="http://www.picardie.fr/" target="_blank"><div id="logo_cr" class="hoverscroll"></div></a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="text-center">
+				<a href="http://www.cg02.fr" target="_blank"><div id="logo_cg02" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
+				<a href="http://www.cg80.fr" target="_blank"><div id="logo_cg80" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
+				<a href="http://www.amiens.fr" target="_blank"><div id="logo_amiens" class="hoverscroll"></div></a>
+			</div>
+		</div>
+		<div class="clearfix"></div>
 	</div>
-</div> <!-- fin bloc-bas -->
-</div><!-- fin globcont-->
-<!-- <div id="bandeaubas"></div> -->
+</div>
+</div>
+<div style="height:20px;"></div>
 
 <!-- {literal} Piwik --> 
 <script type="text/javascript">
