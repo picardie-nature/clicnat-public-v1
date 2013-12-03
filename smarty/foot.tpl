@@ -27,9 +27,9 @@
 			</div>
 		</div>
 		<div class="col-sm-3 pied">
-			<p>Lancé depuis 2009, Clicnat est un logiciel libre de partage des données naturalistes développé 
+			<p>Lancé depuis 2010, Clicnat est un logiciel libre de partage des données naturalistes développé 
 			et hebergé par <a href="http://www.picardie-nature.org/" target="_blank">Picardie Nature</a>
-			sous licence <a href ="http://www.gnu.org/licenses/agpl-3.0.html"> AGL - V3</a>.</p>
+			sous licence <a href ="http://www.gnu.org/licenses/agpl-3.0.html"> AGPL - V3</a>.</p>
 			<p><a href="http://www.picardie-nature.org/" target="_blank">Picardie Nature</a> est une association
 			régionale de protection de la Nature et de l'Environnement en Picardie</small></p>
 			<p>Clicnat : La faune sauvage en un clic pour tous les Picards ! </p>
