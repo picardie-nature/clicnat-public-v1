@@ -346,7 +346,7 @@ $(document).ready(page_fiche_init);
 			<li class="active"><a class="b_onglets" href="#fiche_resume" onglet="fiche_resume">Présentation</a></li>
 			<li><a class="b_onglets" href="#fiche_medias" onglet="fiche_medias">Médias</a></li>
 			<li><a class="b_onglets" href="#fiche_repartition" onglet="fiche_repartition">Répartition géographique</a></li>
-			<li><a class="b_onglets" href="#fiche_biblio" onglet="fiche_biblio">Bibliographie</a></li>
+			<li><a class="b_onglets" href="#fiche_biblio" onglet="fiche_biblio">Bibliographie régionale</a></li>
 		</ul>
 	</div>
 </div>
