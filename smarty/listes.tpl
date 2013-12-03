@@ -38,7 +38,7 @@
 			<div class="panel-heading">Espèces sensibles</div>
 			<div class="panel-body">
 				<p>Pour cette liste d'espèces, il ne sera pas donné d'indication
-				quand à leur localisation à l'échelon communal, afin de ne pas nuire à la pérennité des 
+				quant à leur localisation à l'échelon communal, afin de ne pas nuire à la pérennité des 
 				populations. Ces informations communales sont donc "cachées".</p>
 				<div class="pull-right">
 					<a class="btn btn-success" href="?page=ls"><span class="glyphicon glyphicon-search"></span> Voir la liste</a>
