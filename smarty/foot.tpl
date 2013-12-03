@@ -41,6 +41,9 @@
 				<a href="http://www.europa.eu" target="_blank" title="Union européenne"><div id="logo_europe" class="hoverscroll"></div></a>
 			</div>
 			<div class="text-center">
+				<a href="http://www.picardie-europe.eu" target="_blank" title="Union européenne"><div id="logo_europe_eng" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
 				<a href="http://www.developpement-durable.gouv.fr/" target="_blank"><div id="logo_dreal" class="hoverscroll"></div></a>
 			</div>
 			<div class="text-center">

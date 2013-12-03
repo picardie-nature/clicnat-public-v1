@@ -229,6 +229,12 @@ DIV#bloc-bas {
 	background-image: url('../image/picto_europe.png');
 }
 
+#logo_europe_eng {
+	width: 89px;
+	height: 62px;
+	background-image: url('../image/picto_europe_eng.png');
+}
+
 #logo_dreal {
 	width: 94px;
 	height: 62px;
