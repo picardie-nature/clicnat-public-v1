@@ -11,7 +11,7 @@ div.onglet_fiche_espece {
 }
 #carte {
 	width:100%;
-	height:400px;
+	height:550px;
 /*	margin-left:15px;
 	margin-right:15px;*/
 }
@@ -20,13 +20,13 @@ div.onglet_fiche_espece {
 	left:0px;
 	top:0px;
 	margin-left: 15px;
-	height:400px;
+	height:550px;
 	z-index: 0;
 	position: absolute;
 }
 .overflow-300px {
-	height:400px;
-	max-height:400px;
+	height:550px;
+	max-height:550px;
 	overflow: auto;
 }
 
@@ -482,7 +482,7 @@ $(document).ready(page_fiche_init);
 </div>
 <div class="row onglet_fiche_espece" id="fiche_repartition">
 	<div class="row">
-		<div class="col-sm-12" style="height:400px;">
+		<div class="col-sm-12" style="height:550px;">
 			<div>
 				<div id="carte_cont"><div id="carte" class="container"></div></div>
 				<div id="chargement-en-cours">
