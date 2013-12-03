@@ -68,8 +68,8 @@ class Promontoire extends clicnat_smarty {
 		}
 
 		$this->assign_by_ref("l_aisne", $espece->entrepot_liste_communes_presence("2"));
-		$this->assign_by_ref("l_oise", $espece->entrepot_liste_communes_presence("80"));
-		$this->assign_by_ref("l_somme", $espece->entrepot_liste_communes_presence("02"));
+		$this->assign_by_ref("l_oise", $espece->entrepot_liste_communes_presence("60"));
+		$this->assign_by_ref("l_somme", $espece->entrepot_liste_communes_presence("80"));
 	}
 
 	protected function before_definitions() {
