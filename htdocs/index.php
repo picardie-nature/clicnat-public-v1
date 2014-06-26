@@ -9,7 +9,10 @@ $start_time = microtime(true);
 $disallow_dump = false;
 $context = 'promontoire';
 
-require_once('/etc/baseobs/config.php');
+if (file_exists('config.php'))
+	require_once('config.php');
+else
+	require_once('/etc/baseobs/config.php');
 
 define('SESS', 'PROMONTOIRE2');
 define('LOCALE', 'fr_FR.UTF-8');

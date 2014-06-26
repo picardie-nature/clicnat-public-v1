@@ -557,6 +557,7 @@ $(document).ready(page_fiche_init);
 			<h2>Répartition communale</h2>
 			<div class="col-sm-3">
 				<div class="panel panel-default">
+					{if $l_aisne}
 					<div class="panel-heading"><span class="label label-primary pull-right">{$l_aisne->count()}</span> Aisne</div>
 					<div class="panel-body overflow-300px">
 						<ul class="nav nav-pills nav-stacked">
@@ -564,10 +565,12 @@ $(document).ready(page_fiche_init);
 							<li><a href="?page=commune&id={$c.id_espace}"><span class="badge pull-right">{$c.ymax}</span>{$c.nom2}</a></li>
 						{/foreach}
 					</div>
+					{/if}
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="panel panel-default">
+					{if $l_oise}
 					<div class="panel-heading"><span class="label label-primary pull-right">{$l_oise->count()}</span> Oise</div>
 					<div class="panel-body overflow-300px">
 						<ul class="nav nav-pills nav-stacked">
@@ -576,10 +579,12 @@ $(document).ready(page_fiche_init);
 						{/foreach}
 						</ul>
 					</div>
+					{/if}
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="panel panel-default">
+					{if $l_somme}
 					<div class="panel-heading"><span class="label label-primary pull-right">{$l_somme->count()}</span> Somme</div>
 					<div class="panel-body overflow-300px">
 						<ul class="nav nav-pills nav-stacked">
@@ -588,6 +593,7 @@ $(document).ready(page_fiche_init);
 						{/foreach}
 						</ul>
 					</div>
+					{/if}
 				</div>
 
 			</div>
@@ -595,9 +601,9 @@ $(document).ready(page_fiche_init);
 				<a style="margin-top: 30px;" href="#" class="btn btn-primary">Télécharger la liste des communes</a>
 				<div id="donut" style="height: 200px; width: 200px; margin-left: auto; margin-right: auto; margin-top: 30px; margin-bottom: 30px;"></div>
 				<script>
-				var d_somme =  {$l_somme->count()};
-				var d_oise =  {$l_oise->count()};
-				var d_aisne =  {$l_aisne->count()};
+				var d_somme =  {if $l_somme}{$l_somme->count()}{else}0{/if};
+				var d_oise =  {if $l_oise}{$l_oise->count()}{else}0{/if};
+				var d_aisne =  {if $l_aisne}{$l_aisne->count()}{else}0{/if};
 				{literal}
 				Morris.Donut({
 					element: 'donut',
