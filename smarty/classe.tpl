@@ -1,12 +1,4 @@
 {include file="head.tpl" titre_page=$classe}
-<style>
-{literal}
-.lordre a {
-	display:block;
-	
-}
-{/literal}
-</style>
 <h1>{$classe}</h1>
 	{if $classe->a_classement_simple()}
 		{assign var=nom_prec value=false}
@@ -29,12 +21,14 @@
 							<th width="30%">Nom scientifique</th>
 						</tr>
 			{/if}
+			{if $e.absent_region neq "t"}
 				<tr>
 					<td>{$e.ordre}</td>
 					<td>{$e.famille}</td>
 					<td><a href="?page=fiche&id={$e.id_espece}">{$e.nom_f}</a></td>
-					<td><a href="?page=fiche&id={$e.id_espece}"><i>{$e.nom_s}</i></td>
+					<td><a href="?page=fiche&id={$e.id_espece}"><i>{$e.nom_s}</i></a></td>
 				</tr>
+			{/if}
 		{/foreach}
 					</table>
 				</div>

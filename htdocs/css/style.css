@@ -990,3 +990,7 @@ div.pas_de_carte_dispo {
 	/*.colonne table {} */
 }
 
+/* classe.tpl */
+.lordre a {
+	display:block;
+}
