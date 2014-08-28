@@ -48,12 +48,14 @@
 						<th width="30%">Nom scientifique</th>
 					</tr>
 					{foreach from=$classe->especes_ordre_md5($md5) item=e}
+					{if $e.absent_region neq "t"}
 					<tr>
 						<td>{$e.ordre}</td>
 						<td>{$e.famille}</td>
 						<td><a href="?page=fiche&id={$e.id_espece}">{$e.nom_f}</a></td>
 						<td><a href="?page=fiche&id={$e.id_espece}"><i>{$e.nom_s}</i></td>
 					</tr>
+					{/if}
 					{/foreach}
 				</table>
 			</div>
