@@ -343,10 +343,10 @@ $(document).ready(page_fiche_init);
 <div class="row">
 	<div class="col-sm-12">
 		<ul class="nav nav-tabs nav-justified">
-			<li class="active"><a class="b_onglets" href="#fiche_resume" onglet="fiche_resume">Présentation</a></li>
-			<li><a class="b_onglets" href="#fiche_medias" onglet="fiche_medias">Médias</a></li>
-			<li><a class="b_onglets" href="#fiche_repartition" onglet="fiche_repartition">Répartition géographique</a></li>
-			<li><a class="b_onglets" href="#fiche_biblio" onglet="fiche_biblio">Bibliographie régionale</a></li>
+			<li class="active"><a class="b_onglets" href="javascript:;" onglet="fiche_resume">Présentation</a></li>
+			<li><a class="b_onglets" href="javascript:;" onglet="fiche_medias">Médias</a></li>
+			<li><a class="b_onglets" href="javascript:;" onglet="fiche_repartition">Répartition géographique</a></li>
+			<li><a class="b_onglets" href="javascript:;" onglet="fiche_biblio">Bibliographie régionale</a></li>
 		</ul>
 	</div>
 </div>
@@ -367,15 +367,16 @@ $(document).ready(page_fiche_init);
 			Pas de photos pour illustrer cette fiche
 		{/if}
 		{if $referentiel}
-			<span class="badge">Menace : {$referentiel.categorie}</span>
-			<span class="badge">Rareté : {$referentiel.indice_rar}</span>
+			<span class="label label-default">Menace : {$referentiel.categorie}</span>
+			<span class="label label-default">Rareté : {$referentiel.indice_rar}</span>
 		{/if}
 		{if $espece->determinant_znieff}
-			<span class="badge">Espèce déterminante ZNIEFF</span>
+			<span class="label label-primary">Espèce déterminante ZNIEFF</span>
 		{/if}
 		{if $espece->invasif}
-			<span class="badge">Invasive</span>
+			<span class="label label-warning">Invasive</span>
 		{/if}
+		{if $espece->absent_region}<span class="label label-info">Espèce absente de la région</span>{/if}
 		
 	</div>	
 	<div class="col-sm-6">
