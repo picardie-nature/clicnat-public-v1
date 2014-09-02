@@ -75,6 +75,45 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref("l_somme", $espece->entrepot_liste_communes_presence("80"));
 	}
 
+	protected function before_fiche_communes_csv() {
+		bobs_element::cli($_GET['id']);
+		$fo = fopen("php://output","w");
+
+		if (!$fo)
+			throw new Exception('fo');
+		if (empty($_GET['id']))
+			throw new InvalidArgumentException('numéro espèce');
+
+		require_once(OBS_DIR.'espece.php');
+
+		$espece = get_espece($this->db, $_GET['id']);
+
+		if (!$espece)
+			throw new Exception('espèce inconnue');
+
+		if (!$espece->get_restitution_ok(bobs_espece::restitution_public))
+			throw new Exception('espèce sensible');
+
+		$nom = strtolower($espece->__toString());
+		$nom = str_replace(array(" ;,'"), array("____"),$nom);
+		$this->header_csv("communes_$nom.csv");
+		fputcsv($fo,array("code_insee","nom","dernière année","url"));
+		foreach (array("2","60","80") as $dept) {
+			$l = $espece->entrepot_liste_communes_presence($dept);
+			foreach ($l as $commune) {
+				$ec = get_espace_commune($this->db, $commune['id_espace']);
+				fputcsv($fo, array(
+					sprintf("%02d%03d", $ec->dept,$ec->code_insee),
+					$ec->nom2,
+					$commune["ymax"],
+					"http://www.clicnat.fr/?page=commune&id={$commune['id_espace']}"
+				));
+			}
+		}
+		fclose($fo);
+		exit();
+	}
+
 	protected function before_definitions() {
 		$especes = bobs_espece::liste_especes_sensibles($this->db);
 		$this->assign_by_ref('ls', $especes);
@@ -237,12 +276,14 @@ class Promontoire extends clicnat_smarty {
 			case 'li':
 				$especes = bobs_espece::liste_invasives($this->db);
 				break;
+			default:
+				throw new Exception('liste inconnue');
 		}
 		$fname = tempnam("/tmp", "liste_espece");
 		$f = fopen($fname, "w");
 		$especes->csv($f);
 		fclose($f);
-		header("Content-type: text/csv; charset=UTF-8");
+		$this->header_csv("liste_espece_{$_GET['liste']}.csv", filesize($fname));
 		echo file_get_contents($fname);
 		unlink($fname);
 		exit();

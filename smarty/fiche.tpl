@@ -303,6 +303,13 @@ function page_fiche_init() {
 
 		return false;
 	});
+	$("img.fiche_media").click(function () {
+		$('#mod_photo_nom_esp').html($('#nom_espece').html());
+		$('#mod_photo').modal();
+		var doc_id = $(this).attr('doc_id');
+		$('#mod_photo_src').css('background-image', "url('?page=img_esp_grand&id="+doc_id+"')");
+		$('#mod_photo_auteur').html("&copy; "+$(this).attr('auteur'));
+	});
 
 	window.setInterval(function () {
 			if (annees_auto) {
@@ -320,16 +327,37 @@ $(document).ready(page_fiche_init);
 <div style="display:none;">
 	<div id="dlg-photos" title="{$espece}"></div>
 </div>
-
+<div id="mod_photo" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Fermer</span>
+				</button>
+				<h4 class="modal-title" id="mod_photo_nom_esp"></h4>
+			</div>
+			<div class="modal-body">
+				<div id="mod_photo_src" style="width:100%; height:400px; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"  ></div>
+				<p id="mod_photo_auteur" class="text-muted text-right"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-sm-12">
 		<h1 id="espece" id_espece="{$espece->id_espece}">
 			<img src="image/30x30_g_{$espece->classe|lower}.png"/>
+			<span id="nom_espece">
 			{if !$espece->nom_f}
 				{$espece->nom_s}
 			{else}
 				{$espece->nom_f} <small><i>{$espece->nom_s}</i></small>
 			{/if}
+			</span>
 			<a href="#" id="btn_rech" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a>
 		</h1>
 	</div>
@@ -382,31 +410,31 @@ $(document).ready(page_fiche_init);
 	<div class="col-sm-6">
 		{assign var=n_texte value=0}
 		{if $espece->commentaire}
-			<h1>Répartition régionale</h1>
-			<div>{$espece->commentaire}</div>
+			<h3>Répartition régionale</h3>
+			<p class="text-justify">{$espece->commentaire}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->habitat}
-			<h1>Habitat principal</h1>
-			<div>{$espece->habitat}</div>
+			<h3>Habitat principal</h3>
+			<p class="text-justify">{$espece->habitat}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->menace}
-			<h1>Menaces potentielles</h1>
-			<div>{$espece->menace}</div>
+			<h3>Menaces potentielles</h3>
+			<p class="text-justify">{$espece->menace}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->action_conservation}
-			<h1>Actions de conservation</h1>
-			<div>{$espece->action_conservation}</div>
+			<h3>Actions de conservation</h3>
+			<p class="text-justify">{$espece->action_conservation}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->commentaire_statut_menace}
-			<h1>Commentaires sur le statut de menace</h1>
-			<div>{$espece->commentaire_statut_menace}</div>
+			<h3>Commentaires sur le statut de menace</h3>
+			<p class="text-justify">{$espece->commentaire_statut_menace}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
-		{if $n eq 0}
+		{if $n_texte eq 0}
 			<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations()} fois dans la base de données.</p>
 			{if $espece->ordre}
 				<p>Il appartient à l'ordre des {$espece->ordre}
@@ -472,7 +500,7 @@ $(document).ready(page_fiche_init);
 		{foreach from=$espece->documents_liste() item=img}
 			{if !$img->est_en_attente()}
 				{if $img->get_type() == 'image'}
-					<img src="?page=img_esp&id={$img->get_doc_id()}"∕>
+					<img class="fiche_media" src="?page=img_esp&id={$img->get_doc_id()}" doc_id="{$img->get_doc_id()}" auteur="{$img->get_auteur()}"∕>
 				{/if}
 			{/if}
 		{/foreach}
@@ -599,7 +627,7 @@ $(document).ready(page_fiche_init);
 
 			</div>
 			<div class="col-sm-3">
-				<a style="margin-top: 30px;" href="#" class="btn btn-primary">Télécharger la liste des communes</a>
+				<a style="margin-top: 30px;" href="?page=fiche_communes_csv&id={$espece->id_espece}" class="btn btn-primary">Télécharger la liste des communes</a>
 				<div id="donut" style="height: 200px; width: 200px; margin-left: auto; margin-right: auto; margin-top: 30px; margin-bottom: 30px;"></div>
 				<script>
 				var d_somme =  {if $l_somme}{$l_somme->count()}{else}0{/if};
