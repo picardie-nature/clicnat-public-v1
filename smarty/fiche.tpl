@@ -394,6 +394,29 @@ $(document).ready(page_fiche_init);
 		{if $image_aff_ok eq 0}
 			Pas de photos pour illustrer cette fiche
 		{/if}
+
+		<div>
+		{assign var=n_prot value=0}
+		{assign var=etaxref value=$espece->get_inpn_ref()}
+		{if $etaxref}
+			{foreach from=$etaxref->get_protections() item=p}
+				{if $p.cd_protection != 'MAYEEA'}
+					{if $n_prot eq 0}<h3>Législation</h3>{/if}
+					{if $p.url}
+						<p><a href="{$p.url}" target="_blank"  title="{$p.cd_protection}">{$p.intitule}</a></p>
+					{else}
+						<p> {$p.intitule} {$p.article} <small>{$p.cd_protection}</small></p>
+					{/if}
+					{assign var=n_prot value=$n_prot+1}
+				{/if}
+			{/foreach}
+			{if $n_prot > 0}
+				<small>Source : <a href="http://inpn.mnhn.fr/telechargement/referentielEspece/reglementation">INPN Espèces réglementées</a></small>
+			{/if}
+		{/if}
+		</div>
+
+
 		{if $referentiel}
 			<span class="label label-default">Menace : {$referentiel.categorie}</span>
 			<span class="label label-default">Rareté : {$referentiel.indice_rar}</span>
