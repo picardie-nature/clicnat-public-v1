@@ -40,7 +40,7 @@ class Promontoire extends clicnat_smarty {
     
 	public function __construct($db) {
 		setlocale(LC_ALL, LOCALE);	
-		parent::__construct($db, SMARTY_TEMPLATE_PROMONTOIRE2, SMARTY_COMPILE_PROMONTOIRE2, SMARTY_CACHEDIR_PROMONTOIRE2, '/tmp/clicnat_cache_public');
+		parent::__construct($db, SMARTY_TEMPLATE_PROMONTOIRE2, SMARTY_COMPILE_PROMONTOIRE2, SMARTY_CACHEDIR_PROMONTOIRE2, '/tmp/clicnat_cache_public2');
 		$this->assign('niveau_restitution', bobs_espece::restitution_public);
 	}
 
