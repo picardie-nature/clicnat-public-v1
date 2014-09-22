@@ -467,7 +467,7 @@ $(document).ready(page_fiche_init);
 	</div>
 
 	<div class="col-sm-3">
-		<h1>Statut</h1>
+		<h3>Statut</h3>
 		{if $referentiel}
 		<table class="table">
 			{if $referentiel.statut_origine}
@@ -515,6 +515,10 @@ $(document).ready(page_fiche_init);
 		</table>
 		{else}
 			Ce <a target="_blank" href="?page=definitions#gl_taxon">taxon</a> n'a pas été évalué.
+		{/if}
+		{if $etaxref}
+			{assign var=taxref value=$espece->get_inpn_ref()}
+			<p><a href="http://inpn.mnhn.fr/espece/cd_nom/{$taxref->cd_nom}">Visiter la fiche espèce sur le site de l'INPN</a></p>
 		{/if}
 	</div>
 </div>
