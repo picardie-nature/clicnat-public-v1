@@ -402,6 +402,34 @@ class Promontoire extends clicnat_smarty {
 		$this->assign('maj', file_get_contents('/var/cache/bobs/promontoire.maj'));
 		$this->assign('titre_page', 'Carte régionale');
 	}
+
+	public function before_occtax() {
+		/* Rewrite rules:
+		 * 	RewriteEngine on
+		 * 	RewriteRule ^(.*)/occtax/(.*)$ $1/?page=occtax&guid=$2 [PT]
+		 */
+		try {
+			$this->header_xml();
+			if (!isset($_GET['guid']))
+				throw new Exception('guid');
+
+			require_once(OBS_DIR.'sinp.php');
+
+			$citation = bobs_citation::by_guid($this->db, $_GET['guid']);
+			$doc = new DOMDocument('1.0','utf-8');
+			$doc->formatOutput = true;
+			$root = $doc->createElement("Collection");
+			$c_sinp = new clicnat_citation_export_sinp($this->db, $citation->id_citation);
+			$root->appendChild($c_sinp->occurence($doc,true));
+			$doc->appendChild($root);
+			echo $doc->saveXML();
+			exit();
+		} catch (Exception $e) {
+			$this->header_404();
+			echo "<i>occurence inconnue</i>";
+		}
+	}
+
     
 	/**
 	* @brief affiche la page
