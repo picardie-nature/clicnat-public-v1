@@ -416,11 +416,6 @@ $(document).ready(page_fiche_init);
 		{/if}
 		</div>
 
-
-		{if $referentiel}
-			<span class="label label-default">Menace : {$referentiel.categorie}</span>
-			<span class="label label-default">Rareté : {$referentiel.indice_rar}</span>
-		{/if}
 		{if $espece->determinant_znieff}
 			<span class="label label-primary">Espèce déterminante ZNIEFF</span>
 		{/if}
