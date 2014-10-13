@@ -26,6 +26,7 @@
 	<div class="col-sm-3" id="paneau">
 		<div class="nav list-group">
 			{foreach from=$compteurs item=groupe}
+			{if $groupe.classe neq "_"}
 			<a class="list-group-item" href="#classe{$groupe.classe}" classe="{$groupe.classe}">
 				<h4><img src="image/20x20_g_{$groupe.classe|lower}.png"/> 
 				{$groupe.lib}</h4>
@@ -50,6 +51,7 @@
 				{/if}
 				</p>
 			</a>
+			{/if}
 			{/foreach}
 		</div>
 	</div>
