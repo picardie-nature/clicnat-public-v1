@@ -223,18 +223,17 @@ class Promontoire extends clicnat_smarty {
 				$classes_libs[$c] = $compteurs[$c]['lib'] = bobs_espece::get_classe_lib_par_lettre($c);
 				$compteurs[$c]['classe'] = $c;
 			}
+			$especes = $espace->entrepot_liste_especes();
+			$especes->trier_par_classe_ordre_famille_nom();
 			
-			$especes = $espace->get_liste_especes();
-			
-			foreach ($especes as $e) {
-				$compteurs[$e['classe']]['n']++;
-				$esp = get_espece($this->db, $e);
+			foreach ($especes as $esp) {
+				$compteurs[$esp->classe]['n']++;
 				if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
-					$compteurs[$e['classe']]['nc']++;
+					$compteurs[$esp->classe]['nc']++;
 			}
 			$this->assign('groupes', bobs_espece::get_classes());
 			$this->assign_by_ref('liste_especes', $especes);
-			$this->assign_by_ref('n_especes', count($especes));
+			$this->assign_by_ref('n_especes', $especes->count());
 			$this->assign_by_ref('compteurs', $compteurs);
 			$this->assign_by_ref('commune', $espace);
 			$this->assign_by_ref('titre_page', $espace);
@@ -419,6 +418,7 @@ class Promontoire extends clicnat_smarty {
 			$doc = new DOMDocument('1.0','utf-8');
 			$doc->formatOutput = true;
 			$root = $doc->createElement("Collection");
+			$root->setAttributeNs(GML_NS_URL, 'gml:id', "root");
 			$c_sinp = new clicnat_citation_export_sinp($this->db, $citation->id_citation);
 			$root->appendChild($c_sinp->occurence($doc,true));
 			$doc->appendChild($root);

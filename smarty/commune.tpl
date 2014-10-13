@@ -60,12 +60,12 @@
 	{foreach from=$liste_especes item=espece name=liste2}
 
 
-		{if $classe != $espece.classe}
+		{if $classe != $espece->classe}
 			{if strlen($classe)>0}
 					</div>
 				</div><!-- fin -->
 			{/if}
-			{assign var=classe value=$espece.classe}
+			{assign var=classe value=$espece->classe}
 				<div class="panel panel-default">
 					<div class="panel-heading" id="classe{$classe}">
 						<a href="#commune" class="btn btn-default pull-right">
@@ -82,12 +82,11 @@
 						</div>
 		{/if}
 			{assign var=n value=$n+1}	
-			{assign var=e value=$commune->get_espece($espece.id_espece)}
-			{assign var=r value=$e->get_referentiel_regional()}
-			{if $e->get_restitution_ok($niveau_restitution)}	
+			{assign var=r value=$espece->get_referentiel_regional()}
+			{if $espece->get_restitution_ok($niveau_restitution)}	
 				<div class="row">
 					<div class="col-xs-4">
-						<a href="?page=fiche&id={$espece.id_espece}" title="{$espece.nom_s}">{$e}</a>
+						<a href="?page=fiche&id={$espece->id_espece}" title="{$espece->nom_s}">{$espece}</a>
 					</div>
 					<div class="col-xs-2" style="background-color:#f7f7f7;">
 						{if $r.indice_rar}
@@ -105,8 +104,8 @@
 						{/if}
 					</div>
 					<div class="col-xs-4" style="text-align:center;background-color:#f7f7f7; ">
-						{assign var=ya value=$commune->get_premiere_annee_obs($espece.id_espece)}
-						{assign var=yb value=$commune->get_derniere_annee_obs($espece.id_espece)}
+						{assign var=ya value=$commune->entrepot_premiere_annee_obs($espece->id_espece)}
+						{assign var=yb value=$commune->entrepot_derniere_annee_obs($espece->id_espece)}
 						{if $ya eq $yb}
 							{$ya}
 						{else}
