@@ -529,6 +529,32 @@ $(document).ready(page_fiche_init);
 		{if $image_aff_ok eq 0}
 			Pas de photos pour illustrer cette fiche
 		{/if}
+		{if $espece->classe == 'O'}
+			{assign var=xc value=$espece->xeno_canto()}
+			{assign var=sons value=$xc->enregistrements()}
+			{if $sons.numRecordings > 0}
+			<h4>Ecouter les enregistrements de <a href="http://www.xeno-canto.org">Xeno-canto</a></h4>
+			<div class="row">
+			{foreach from=$sons.recordings item=r}
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">{$r.gen} {$r.sp} {$r.ssp}</h3>
+						</div>
+						<div class="panel-body" style="min-height:6em;">
+							Enregistré par {$r.rec} à {$r.loc} <a href="{$r.url}">&rarr;</a>
+						</div>
+						<div class="panel-footer">
+							<audio controls>
+								<source src="{$r.file}" type="audio/mpeg"/>
+							</audio>
+						</div>
+					</div>
+				</div>
+			{/foreach}
+			{/if}
+			</div>
+		{/if}
 	</div>
 </div>
 <div class="row onglet_fiche_espece" id="fiche_repartition">
