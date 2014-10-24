@@ -4,8 +4,9 @@
 		<h1>Listes d'espèces - référentiels</h1>
 	</div>
 </div>
+{assign var=rclass value="col-xs-12 col-sm-6 col-md-4 col-lg-3"}
 <div class="row">
-	<div class="col-sm-4">
+	<div class="{$rclass}">
 		<div class="panel panel-default">
 			<div class="panel-heading">Espèces de la liste rouge picarde</div>
 			<div class="panel-body">
@@ -19,7 +20,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-4">
+	<div class="{$rclass}">
 		<div class="panel panel-default">
 			<div class="panel-heading">Espèces invasives</div>
 			<div class="panel-body">
@@ -33,7 +34,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-4">
+	<div class="{$rclass}">
 		<div class="panel panel-default">
 			<div class="panel-heading">Espèces sensibles</div>
 			<div class="panel-body">
@@ -47,7 +48,18 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="{$rclass}">
+		<div class="panel panel-default">
+			<div class="panel-heading">Espèces déterminantes de ZNIEFF</div>
+			<div class="panel-body">
+				<p>Il s'agit des espèces susceptibles d'engendrer la mise en place d'une <a href="http://fr.wikipedia.org/wiki/Zone_naturelle_d%27int%C3%A9r%C3%AAt_%C3%A9cologique,_faunistique_et_floristique">Zone Naturelle d'Intérêt Écologique, Faunistique et Floristique</a>.</p> 
+				<div class="pull-right">
+					<a class="btn btn-success" href="?page=lz"><span class="glyphicon glyphicon-search"></span> Voir la liste</a>
+					<a class="btn btn-success" href="?page=liste_csv&liste=lz" title="Télécharger"><span class="glyphicon glyphicon-download-alt"></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="row">
 	<div class="col-sm-12">

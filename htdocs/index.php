@@ -263,6 +263,17 @@ class Promontoire extends clicnat_smarty {
 		$this->assign('titre_page', 'Liste des espèces sensibles');
 	}
 
+	/*
+	 * @brief liste des espèces sensibles
+	 */
+	protected function before_lz() {
+		require_once(OBS_DIR.'espece.php');
+		$especes = bobs_espece::liste_determinantes_znieff($this->db);
+		$this->assign_by_ref('lz', $especes);
+		$this->assign('titre_page', 'Liste des espèces déterminantes ZNIEFF');
+	}
+
+
 	protected function before_liste_csv() {
 		require_once(OBS_DIR.'espece.php');
 		switch ($_GET['liste']) {
@@ -274,6 +285,9 @@ class Promontoire extends clicnat_smarty {
 				break;
 			case 'li':
 				$especes = bobs_espece::liste_invasives($this->db);
+				break;
+			case 'lz':
+				$especes = bobs_espece::liste_determinantes_znieff($this->db);
 				break;
 			default:
 				throw new Exception('liste inconnue');
