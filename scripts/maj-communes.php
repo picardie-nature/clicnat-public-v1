@@ -1,5 +1,9 @@
 <?php
-$id_liste = 224;
+/*
+ * Mise à jour de la liste d'espace des communes
+ *
+ * doit être lancée après maj-entrepot.php
+ */
 if (!file_exists('config.php'))
 	require_once('/etc/baseobs/config.php');
 else
@@ -13,7 +17,7 @@ require_once(OBS_DIR.'liste_espace.php');
 get_db($db);
 
 if (!defined('PROMONTOIRE2_ID_LISTE_COMMUNES'))
-	throw new Exception("il créer une liste d'espace et enregistrer son numéro dans config.php PROMONTOIRE2_ID_LISTE_COMMUNES");
+	throw new Exception("il faut créer une liste d'espace et enregistrer son numéro dans config.php PROMONTOIRE2_ID_LISTE_COMMUNES");
 
 $id_liste = PROMONTOIRE2_ID_LISTE_COMMUNES;
 $liste = new clicnat_listes_espaces($db, $id_liste);
