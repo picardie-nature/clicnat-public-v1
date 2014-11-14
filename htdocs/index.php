@@ -73,6 +73,13 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref("l_aisne", $espece->entrepot_liste_communes_presence("2"));
 		$this->assign_by_ref("l_oise", $espece->entrepot_liste_communes_presence("60"));
 		$this->assign_by_ref("l_somme", $espece->entrepot_liste_communes_presence("80"));
+
+		// legislation
+		$f = file_get_contents("textes_legislation_retenus.txt");
+		$textes = explode("\n",$f);
+		$this->assign_by_ref("textes_legislation_retenus", $textes);
+
+
 	}
 
 	protected function before_fiche_communes_csv() {

@@ -400,7 +400,7 @@ $(document).ready(page_fiche_init);
 		{assign var=etaxref value=$espece->get_inpn_ref()}
 		{if $etaxref}
 			{foreach from=$etaxref->get_protections() item=p}
-				{if $p.cd_protection != 'MAYEEA'}
+				{if in_array($p.cd_protection, $textes_legislation_retenus)}
 					{if $n_prot eq 0}<h3>Législation</h3>{/if}
 					{if $p.url}
 						<p><a href="{$p.url}" target="_blank"  title="{$p.cd_protection}">{$p.intitule}</a></p>
