@@ -71,12 +71,24 @@ foreach ($liste->get_espaces() as $commune) {
 	$stats['total'] = 0;
 
 	$stats_classes = array();
-	foreach ($commune->entrepot_liste_especes() as $espece) {
-		$colname = "classe_{$espece->classe}";
-		if (!isset($stats_classes[$colname])) {
-			$stats_classes[$colname] = array();
+	$nb_try = 10;
+	while ($nb_try > 0) {
+		try {
+			foreach ($commune->entrepot_liste_especes() as $espece) {
+				$colname = "classe_{$espece->classe}";
+				if (!isset($stats_classes[$colname])) {
+					$stats_classes[$colname] = array();
+				}
+				$stats_classes[$colname][] = $espece;
+			}
+			$nb_try = 0;
+		} catch (clicnat_exception_espece_pas_trouve $e) {
+			entrepot::db()->communes_stats_data->remove(array("id_espece" => "{$esp['id_espece']}"));
+			$nb_try--;
+			if ($nb_try <= 0) {
+				throw new Exception("Trop d'erreurs !");
+			}
 		}
-		$stats_classes[$colname][] = $espece;
 	}
 
 	foreach ($stats_classes as $k => $t) {
