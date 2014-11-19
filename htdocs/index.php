@@ -159,7 +159,7 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'espace.php');
 		require_once(OBS_DIR.'wfs.php');
 		
-		$listes_public = array(3,224);
+		$listes_public = array(3,224,234);
 
 		$data = file_get_contents('php://input'); // contenu de _POST
 		$doc = new DomDocument();
