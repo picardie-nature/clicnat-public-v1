@@ -1,38 +1,44 @@
 {include file=head.tpl}
 {assign var=liste_espace value=$travail->liste_espace()}
 <div class="row">
-	<div class="col-sm-12">
+	<div class="col-sm-9">
 		<h1>{$travail->titre}</h1>
 		<div>
-			<div class="btn-group" id="btn_vues" role="group">
-				
-			</div>
+			<div class="btn-group" id="btn_vues" role="group"></div>
 		</div>
-		<div id="map" style="width:100%; height:500px; background-color: #aaa;"></div>
+	</div>
+	<div class="col-sm-3">
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-9">
+		<div id="map" style="width:100%; height:500px; background-color: #aaa;"></div>
 		<h3>Description</h3>
 		<p>{$travail->description|markdown}</p>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-3">
 		<h3>Légende</h3>
 		<div id="legende"></div>
+		<h3>Commune</h3>
+		<div id="commune"></div>
+		<ul class="list-group" id="commune_liste"></ul>
 		<h3>Attribution</h3>
 		<p>{$liste_espace} : {$liste_espace->mention}</p>
 		<h3>Téléchargement</h3>
 		<a href="#" class="btn btn-primary">Télécharger KML</a>
-	</div>
 
+	</div>
 </div>
 
-
 <script type="text/javascript" src="http://deco.picardie-nature.org/proj4js/lib/proj4js-compressed.js"></script>
-<script type="text/javascript" src="http://maps.picardie-nature.org/OpenLayers-2.12/OpenLayers.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
 <script type="text/javascript" src="http://maps.picardie-nature.org/carto.js"></script>
 
 <script>
+var classes = new Array();
+{foreach from=$classes item=cl key=c}
+classes['classe_{$c}'] = "{$cl}";
+{/foreach}
 {literal}
 function carte_ajout_layer_wfs(map, id_liste, titre, mention) {
 	var lv  = new OpenLayers.Layer.Vector(titre, {
@@ -47,6 +53,26 @@ function carte_ajout_layer_wfs(map, id_liste, titre, mention) {
 		attribution: mention
 	});
 	map.addLayer(lv);
+	map.events.register('featureover', map, function (e) { 
+		var dc = $('#commune');
+		dc.html("<h4>"+e.feature.data.nom+"</h4>");
+		if (e.feature.data.total > 0)
+			dc.append("<p>"+e.feature.data.total+" espèces au total</p>");
+		var ul = $('#commune_liste');
+		ul.html("");
+		for (var key in e.feature.data) {
+			if (key.match(/classe_.*/)) {
+				if (key == "classe__")
+					continue;
+				if (e.feature.data[key] == 0)
+					continue;
+				cl = key.replace(/^classe_/,'').toLowerCase();
+				ul.append("<li class=\"list-group-item\"><img src=\"image/20x20_g_"+cl+".png\"> "+classes[key]+" <span class=\"badge\">"+e.feature.data[key]+"</span>");
+			}
+		}
+
+	
+	});
 	return lv;
 }
 var sld = undefined;
@@ -79,7 +105,6 @@ OpenLayers.Request.GET({
 			for (var i=0; i<styles.length;i++) {
 				if (styles[i].name == style_name_wanted) {
 					layers = m.getLayersByName("Communes");
-					console.log(layers);
 					layers[0].styleMap.styles["default"] = styles[i];
 					layers[0].redraw();
 					var dl = $('#legende');
@@ -87,11 +112,11 @@ OpenLayers.Request.GET({
 					for (var j=0;j<styles[i].rules.length;j++) {
 						dl.append("<div>"+styles[i].rules[j].title+"<span style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
 					}
-					console.log("done");
 					break;
 				}
 			}
 		});
+		$('.btn-style')[0].click();
 	}
 });
 //{/literal}

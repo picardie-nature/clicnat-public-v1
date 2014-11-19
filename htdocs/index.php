@@ -142,9 +142,13 @@ class Promontoire extends clicnat_smarty {
 	protected function before_carte_communes() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
-
+		$classes = array();
+		foreach (bobs_classe::get_classes() as $c) {
+			$classes[$c] = bobs_classe::get_classe_lib_par_lettre($c, true);
+		}
 		$travail = clicnat_travaux::instance($this->db, ID_TRAVAIL_CARTE_COMMUNES);
 		$this->assign_by_ref("travail", $travail);
+		$this->assign_by_ref('classes', $classes);
 	}
 
 	protected function before_carte_wms() {
