@@ -79,10 +79,13 @@ foreach ($liste->get_espaces() as $commune) {
 	while ($nb_try > 0) {
 		try {
 			foreach ($commune->entrepot_liste_especes() as $espece) {
+				if ($espece->exclure_restitution)
+					continue;
 				$colname = "classe_{$espece->classe}";
 				if (!isset($stats_classes[$colname])) {
 					$stats_classes[$colname] = array();
 				}
+
 				$stats_classes[$colname][] = $espece;
 			}
 			$nb_try = 0;
