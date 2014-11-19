@@ -85,7 +85,7 @@ OpenLayers.Request.GET({
 					var dl = $('#legende');
 					dl.html("");
 					for (var j=0;j<styles[i].rules.length;j++) {
-						dl.append("<div>"+styles[i].rules[j].title+"<span style='color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+">&nbsp;&nbsp;&nbsp;</span></div>");
+						dl.append("<div>"+styles[i].rules[j].title+"<span style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
 					}
 					console.log("done");
 					break;
