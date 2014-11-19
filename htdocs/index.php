@@ -16,6 +16,8 @@ else
 
 define('SESS', 'PROMONTOIRE2');
 define('LOCALE', 'fr_FR.UTF-8');
+if (!defined('ID_TRAVAIL_CARTE_COMMUNES'))
+	define('ID_TRAVAIL_CARTE_COMMUNES', 7);
 
 require_once(SMARTY_DIR.'Smarty.class.php');
 require_once(OBS_DIR.'element.php');
@@ -129,7 +131,19 @@ class Promontoire extends clicnat_smarty {
 	protected function before_carte_wfs() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
+
+		if ($_GET['id'] == ID_TRAVAIL_CARTE_COMMUNES)
+			$this->redirect('?page=carte_communes');
+
 		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
+		$this->assign_by_ref("travail", $travail);
+	}
+
+	protected function before_carte_communes() {
+		require_once(OBS_DIR.'liste_espace.php');
+		require_once(OBS_DIR.'travaux.php');
+
+		$travail = clicnat_travaux::instance($this->db, ID_TRAVAIL_CARTE_COMMUNES);
 		$this->assign_by_ref("travail", $travail);
 	}
 
@@ -145,7 +159,7 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'espace.php');
 		require_once(OBS_DIR.'wfs.php');
 		
-		$listes_public = array(3);
+		$listes_public = array(3,224);
 
 		$data = file_get_contents('php://input'); // contenu de _POST
 		$doc = new DomDocument();
@@ -418,11 +432,6 @@ class Promontoire extends clicnat_smarty {
 		exit();
 	}
 
-	protected function before_carte_communes() {
-		$this->assign('maj', file_get_contents('/var/cache/bobs/promontoire.maj'));
-		$this->assign('titre_page', 'Carte régionale');
-	}
-
 	public function before_occtax() {
 		/* Rewrite rules:
 		 * 	RewriteEngine on
@@ -449,6 +458,139 @@ class Promontoire extends clicnat_smarty {
 			$this->header_404();
 			echo "<i>occurence inconnue</i>";
 		}
+	}
+
+	protected function before_sld_communes() {
+		self::header_xml();
+		$params = array(
+			"styles" => array(
+				"total" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff"),
+						array("min" => 10,	"max" => 100,	"fillcolor" => "#eaedff")
+					),
+					"titre" => "Nombre total d'espèces",
+					"property" => "total"
+				),
+				"classe_A" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'araignées",
+					"property" => "classe_A"
+				),
+				"classe_B" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'amphibiens",
+					"property" => "classe_B"
+				),
+				"classe_I" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'insectes",
+					"property" => "classe_I"
+				),	
+				"classe_M" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de mammifères",
+					"property" => "classe_M"
+				),
+				"classe_O" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'oiseaux",
+					"property" => "classe_O"
+				),
+				"classe_P" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre poissons",
+					"property" => "classe_P"
+				),	
+				"classe_R" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de reptiles",
+					"property" => "classe_R"
+				),	
+				"classe_L" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de bivalves",
+					"property" => "classe_L"
+				),	
+				"classe_N" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'anélides",
+					"property" => "classe_N"
+				),	
+				"classe_C" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de crustacés",
+					"property" => "classe_C"
+				),	
+				"classe_H" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre d'hydrozoaires",
+					"property" => "classe_H"
+				),	
+				"classe_S" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de chilopodes",
+					"property" => "classe_S"
+				),
+				"classe_D" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre de diplopodes",
+					"property" => "classe_D"
+				),	
+				"classe_G" => array (
+					"rules" => array(
+						array("min" => 0,	"max" => 1,	"fillcolor" => "#f7fcf5"),
+						array("min" => 1,	"max" => 10,	"fillcolor" => "#daedff")
+					),
+					"titre" => "Nombre gastéropodes",
+					"property" => "classe_O"
+				),
+			),
+			"layername" => "liste_espace_124"
+		);
+		require_once(OBS_DIR.'sld.php');
+		echo clicnat_sld_rampe::xml($params);
+		exit();
 	}
 
     

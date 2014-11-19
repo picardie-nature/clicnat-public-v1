@@ -24,6 +24,7 @@
 <script type="text/javascript" src="http://deco.picardie-nature.org/proj4js/lib/proj4js-compressed.js"></script>
 <script type="text/javascript" src="http://maps.picardie-nature.org/OpenLayers-2.12/OpenLayers.js"></script>
 <script type="text/javascript" src="http://maps.picardie-nature.org/carto.js"></script>
+
 <script>
 {literal}
 function carte_ajout_layer_wfs(map, id_liste, titre, mention, style) {
@@ -69,7 +70,7 @@ var stylemap = new OpenLayers.StyleMap(new OpenLayers.Style({
 
 //{/literal}
 
-var wfs = carte_ajout_layer_wfs(m, 3, "{$liste_espace}", "{$liste_espace->mention}", stylemap);
+var wfs = carte_ajout_layer_wfs(m, {$liste_espace->id_liste_espace}, "{$liste_espace}", "{$liste_espace->mention}", stylemap);
 m.addLayer(wfs);
 var pt = new OpenLayers.LonLat(2.80151, 49.69606);
 pt.transform(new OpenLayers.Projection(m.displayProjection), new OpenLayers.Projection(m.projection));
