@@ -90,6 +90,7 @@ foreach ($liste->get_espaces() as $commune) {
 			}
 			$nb_try = 0;
 		} catch (clicnat_exception_espece_pas_trouve $e) {
+			bobs_log("maj-commune pas trouvé espèce : {$esp['id_espece']}");
 			entrepot::db()->communes_stats_data->remove(array("id_espece" => "{$esp['id_espece']}"));
 			$nb_try--;
 			if ($nb_try <= 0) {
