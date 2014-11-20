@@ -71,7 +71,7 @@ foreach ($liste->get_espaces() as $commune) {
 		$stats[$attr['name']] = null;
 	}
 	
-	$stats['insee'] = $commune->reference;
+	$stats['insee'] = $commune->code_insee_txt;
 	$stats['total'] = 0;
 
 	$stats_classes = array();
