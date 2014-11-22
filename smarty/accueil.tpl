@@ -12,8 +12,8 @@
 			    <h3>Rechercher par commune</h3>
 			    &nbsp;&nbsp;&gt;&nbsp;<input id="commune" type="text" name="commune" placeholder="Amiens"/><br/>
 			    <small>
-			    <p>Tapez ici les premières lettres du nom de la commune
-			     de votre choix puis sélectionnez celle-ci dans le menu déroulant</p>
+			    <p>Tapez ici les premières lettres du nom de la commune</p>
+		    	    <a class="btn btn-primary" href="?page=carte_wfs&id=7">Carte des espèces recensées par commune</a>
 			    </small>
 			    <br/>
 			</p>
