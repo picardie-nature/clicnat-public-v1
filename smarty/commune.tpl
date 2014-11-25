@@ -3,7 +3,9 @@
 {include file=raretes.tpl}
 <div class="row">
 	<div class="col-sm-12">
-		<h1 id="commune">{$commune->nom2} ({$commune->dept|string_format:"%02d"}) <a href="#" id="btn_rech" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a></h1>
+		<h1 id="commune">{$commune->nom2} ({$commune->dept|string_format:"%02d"}) <a href="#" id="btn_rech" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a>
+			<a class="btn btn-primary pull-right" href="?page=commune_especes_csv&id={$commune->id_espace}">Télécharger <span class="glyphicon glyphicon-download"></span></a>
+		</h1>
 		<div class="well" id="div_rech_commune" style="display:none;">
 			<div class="form-group">
 				<label for="commune">Rechercher une commune</label>

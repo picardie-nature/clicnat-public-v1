@@ -205,6 +205,35 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('classes_libs', $classes_libs);
 	}
 
+	protected function before_commune_especes_csv() {
+		$espace = get_espace_commune($this->db, (int)$_GET['id']);
+		$this->header_csv("especes_{$espace->nom}.csv");
+		$f = fopen("php://output","w");
+		$cols = array("id_espece","cd_nom","classe","ordre","famille","nom_s","nom_v","menace","rarete");
+		fputcsv($f, $cols);
+		$especes = $espace->entrepot_liste_especes();
+		$especes->trier_par_classe_ordre_famille_nom();
+		foreach ($especes as $espece) {
+			if (!$espece->get_restitution_ok(bobs_espece::restitution_public))
+				continue;
+			$refreg = $espece->get_referentiel_regional();
+			$ligne = array(
+				$espece->id_espece,
+				$espece->taxref_inpn_especes,
+				$espece->get_classe_lib_par_lettre($espece->classe),
+				$espece->ordre,
+				$espece->famille,
+				$espece->nom_s,
+				$espece->nom_f,
+				isset($refreg['categorie'])?$refreg['categorie']:'',
+				isset($refreg['indice_rar'])?$refreg['indice_rar']:''
+			);
+			fputcsv($f, $ligne);
+		}
+		fclose($f);
+		exit();
+	}
+
 	/**
 	 * @brief liste des espèces en liste rouge
 	 */
