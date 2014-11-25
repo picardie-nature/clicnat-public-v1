@@ -180,43 +180,29 @@ class Promontoire extends clicnat_smarty {
 		if (empty($_GET['id']))
 		    throw new InvalidArgumentException('numéro de commune');
 		require_once(OBS_DIR.'espace.php');
-		
 		$espace = get_espace_commune($this->db, $_GET['id']);
-		$this->caching = 2;
-		$this->cache_lifetime = 86400;
-		$this->compile_check = false;
-		$classes_libs = array();
-		if (isset($_GET['recalcul'])) {
-			$this->clear_cache('commune.tpl', $espace->id_espace);
-			$this->clear_compiled_tpl('commune.tpl');
+		$classes = bobs_espece::get_classes();
+		$compteurs = array();
+		foreach ($classes as $c) {
+			$compteurs[$c]['n'] = 0;
+			$compteurs[$c]['nc'] = 0;
+			$classes_libs[$c] = $compteurs[$c]['lib'] = bobs_espece::get_classe_lib_par_lettre($c);
+			$compteurs[$c]['classe'] = $c;
 		}
-		if (!$this->is_cached('commune.tpl', $espace->id_espace)) {
-			$classes = bobs_espece::get_classes();
-			$compteurs = array();
-			foreach ($classes as $c) {
-				$compteurs[$c]['n'] = 0;
-				$compteurs[$c]['nc'] = 0;
-				$classes_libs[$c] = $compteurs[$c]['lib'] = bobs_espece::get_classe_lib_par_lettre($c);
-				$compteurs[$c]['classe'] = $c;
-			}
-			$especes = $espace->entrepot_liste_especes();
-			$especes->trier_par_classe_ordre_famille_nom();
-			
-			foreach ($especes as $esp) {
-				$compteurs[$esp->classe]['n']++;
-				if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
-					$compteurs[$esp->classe]['nc']++;
-			}
-			$this->assign('groupes', bobs_espece::get_classes());
-			$this->assign_by_ref('liste_especes', $especes);
-			$this->assign_by_ref('n_especes', $especes->count());
-			$this->assign_by_ref('compteurs', $compteurs);
-			$this->assign_by_ref('commune', $espace);
-			$this->assign_by_ref('titre_page', $espace);
-			$this->assign_by_ref('classes_libs', $classes_libs);
+		$especes = $espace->entrepot_liste_especes();
+		$especes->trier_par_classe_ordre_famille_nom();
+		foreach ($especes as $esp) {
+			$compteurs[$esp->classe]['n']++;
+			if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
+				$compteurs[$esp->classe]['nc']++;
 		}
-		parent::display('commune.tpl', $espace->id_espace);
-		exit();
+		$this->assign('groupes', bobs_espece::get_classes());
+		$this->assign_by_ref('liste_especes', $especes);
+		$this->assign_by_ref('n_especes', $especes->count());
+		$this->assign_by_ref('compteurs', $compteurs);
+		$this->assign_by_ref('commune', $espace);
+		$this->assign_by_ref('titre_page', $espace);
+		$this->assign_by_ref('classes_libs', $classes_libs);
 	}
 
 	/**
