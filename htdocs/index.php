@@ -31,12 +31,6 @@ if (!file_exists(SMARTY_CACHEDIR_PROMONTOIRE2)) {
 	mkdir(SMARTY_CACHEDIR_PROMONTOIRE2);
 }
 
-if (stristr($_SERVER['HTTP_USER_AGENT'], '80legs.com')) {
-	bobs_log('exit webcrawler http://www.80legs.com/webcrawler.html');
-	exit(0);
-
-}
-
 class Promontoire extends clicnat_smarty {
 	protected $db;
     
@@ -180,50 +174,7 @@ class Promontoire extends clicnat_smarty {
 			throw new Exception('WFS Exception...');
 		exit();
 	}
-
-	protected function before_ms_communes() {	
-		$args = $_SERVER['QUERY_STRING'];
-		$width = $_GET['WIDTH'];
-		$height = $_GET['HEIGHT'];
-		$bbox = $_GET['BBOX'];
-		$layers = "LAYERS=mer%2Ccommunes_n_esp%2Climite_adm";
-		$url = "http://localhost/cgi-bin/mapserv?map=/carto/atlas.map&{$layers}&FORMAT=image%2Fjpeg&TRANSPARENT=false&DPI=96&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX=$bbox&WIDTH=$width&HEIGHT=$height";
-	    $ch = curl_init();
-	    
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	   
-	    $output = curl_exec($ch);
-	    
-	    if (!empty($output)) {
-			header('Content-type: '.curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-			echo $output;
-	    } else {
-			echo $url;
-	    }
-	    curl_close($ch);
-	    exit();
-	}
 	
-	protected function before_geocode() {
-		require_once(OBS_DIR.'espace.php');
-		bobs_element::cli($_GET['lat']);
-		bobs_element::cli($_GET['lon']);
-		$wkt = sprintf('POINT(%s %s)',$_GET['lon'], $_GET['lat']);
-		$c = bobs_espace_commune::get_commune_for_point($this->db, $wkt, 2154);	
-		$this->assign_by_ref('commune',$c);
-	}
-
-	protected function before_geocode_lien() {
-		require_once(OBS_DIR.'espace.php');
-		bobs_element::cls($_GET['lat']);
-		bobs_element::cls($_GET['lon']);
-		$wkt = sprintf('POINT(%s %s)',$_GET['lon'], $_GET['lat']);
-		$c = bobs_espace_commune::get_commune_for_point($this->db, $wkt);	
-		if (!$c) echo "pas de commune trouvée ici : longitude {$_GET['lon']} latitude {$_GET['lat']}";
-		else echo "Voir cette commune : <a href=\"?page=commune&id={$c['id_espace']}\">{$c['nom']}</a>";
-		exit();
-	}
-
 	protected function before_commune() {
 		bobs_element::cli($_GET['id']);
 		if (empty($_GET['id']))
