@@ -22,11 +22,12 @@ $classes = array(
 		"rules" => array(
 			array("min" => 0,	"max" => 1,	"fillcolor" => $couleurs8[0]),
 			array("min" => 1,	"max" => 5,	"fillcolor" => $couleurs8[1]),
-			array("min" => 10,	"max" => 20,	"fillcolor" => $couleurs8[2]),
-			array("min" => 20,	"max" => 40,	"fillcolor" => $couleurs8[3]),
-			array("min" => 40,	"max" => 80,	"fillcolor" => $couleurs8[4]),
-			array("min" => 80,	"max" => 160,	"fillcolor" => $couleurs8[5]),
-			array("min" => 160,	"max" => 320,	"fillcolor" => $couleurs8[6])
+			array("min" => 5,	"max" => 10,	"fillcolor" => $couleurs8[2]),
+			array("min" => 10,	"max" => 20,	"fillcolor" => $couleurs8[3]),
+			array("min" => 20,	"max" => 40,	"fillcolor" => $couleurs8[4]),
+			array("min" => 40,	"max" => 80,	"fillcolor" => $couleurs8[5]),
+			array("min" => 80,	"max" => 160,	"fillcolor" => $couleurs8[6]),
+			array("min" => 160,	"max" => 320,	"fillcolor" => $couleurs8[7])
 		),
 		"titre" => "Nombre d'araignées",
 		"property" => "classe_A"
