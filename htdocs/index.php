@@ -163,7 +163,7 @@ class Promontoire extends clicnat_smarty {
 		$doc = new DomDocument();
 		@$doc->loadXML($data);
 		header('Content-type: text/xml');
-		$gf = new clicnat_wfs_get_feature_liste_espace($this->db, $doc);
+		$gf = new clicnat_wfs_get_feature($this->db, $doc);
 		$sel = $gf->get_liste_espaces();
 		//$u = $this->get_user_session();
 		//if (($u->id_utilisateur == $sel->id_utilisateur) || $sel->ref)
@@ -356,6 +356,15 @@ class Promontoire extends clicnat_smarty {
 
 		echo json_encode($r);
 		exit();
+	}
+
+	protected function before_wfs() {
+		require_once(OBS_DIR.'wfs.php');
+		$this->header_xml();
+		$op = clicnat_wfs_op($this->db, $_GET);
+		echo $op->reponse()->saveXML();
+		exit();
+		
 	}
 	
 	protected function before_partenaires() {
