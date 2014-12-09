@@ -3,7 +3,6 @@
 <head>
 	<title>{if $titre_page}{$titre_page} - {/if}Picardie Nature</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=7" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<!-- <link href="http://deco.picardie-nature.org/jquery/css/redmond/jquery-ui-1.8.2.custom.css" media="all" rel="stylesheet" type="text/css" /> -->
 
