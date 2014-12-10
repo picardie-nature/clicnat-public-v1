@@ -192,9 +192,11 @@ class Promontoire extends clicnat_smarty {
 		$especes = $espace->entrepot_liste_especes();
 		$especes->trier_par_classe_ordre_famille_nom();
 		foreach ($especes as $esp) {
-			$compteurs[$esp->classe]['n']++;
-			if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
-				$compteurs[$esp->classe]['nc']++;
+			if (!$esp->exclure_restitution) {
+				$compteurs[$esp->classe]['n']++;
+				if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
+					$compteurs[$esp->classe]['nc']++;
+			}
 		}
 		$this->assign('groupes', bobs_espece::get_classes());
 		$this->assign_by_ref('liste_especes', $especes);
@@ -209,7 +211,7 @@ class Promontoire extends clicnat_smarty {
 		$espace = get_espace_commune($this->db, (int)$_GET['id']);
 		$this->header_csv("especes_{$espace->nom}.csv");
 		$f = fopen("php://output","w");
-		$cols = array("id_espece","cd_nom","classe","ordre","famille","nom_s","nom_v","menace","rarete");
+		$cols = array("id_espece","cd_nom","classe","ordre","famille","nom_s","nom_v","menace","rarete","pas_affiché_liste");
 		fputcsv($f, $cols);
 		$especes = $espace->entrepot_liste_especes();
 		$especes->trier_par_classe_ordre_famille_nom();
@@ -226,7 +228,8 @@ class Promontoire extends clicnat_smarty {
 				$espece->nom_s,
 				$espece->nom_f,
 				isset($refreg['categorie'])?$refreg['categorie']:'',
-				isset($refreg['indice_rar'])?$refreg['indice_rar']:''
+				isset($refreg['indice_rar'])?$refreg['indice_rar']:'',
+				$espece->exclure_restitution
 			);
 			fputcsv($f, $ligne);
 		}

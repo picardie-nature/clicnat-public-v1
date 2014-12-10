@@ -87,7 +87,7 @@
 		{/if}
 			{assign var=n value=$n+1}	
 			{assign var=r value=$espece->get_referentiel_regional()}
-			{if $espece->get_restitution_ok($niveau_restitution)}	
+			{if $espece->get_restitution_ok($niveau_restitution) && !$espece->exclure_restitution}	
 				<div class="row">
 					<div class="col-xs-4">
 						<a href="?page=fiche&id={$espece->id_espece}" title="{$espece->nom_s}">{$espece}</a>
