@@ -24,7 +24,7 @@ fonction de l'évolution de l'état de conservation des populations.</p>
 
 <h2 id="gl_cachee">A propos des espèces sensibles</h2><span id="gl_sensible"></span>
 <p>Espèces dont la divulgation de la localisation à l'échelle communale a été jugée comme préjudiciable
-eu égard à son statut de forte menace, de fort risque d'extinction régional.</p>
+eu égard à son statut de forte menace, de fort risque d'extinction régionale.</p>
 <p>Bien que les localisations proposées sur ce site soient à l'échelle de la commune
 ou de mailles de 5km sur 5 km, certaines espèces que nous avons considérées comme sensibles
 sont retirées des listes par commune.</p>
@@ -73,7 +73,7 @@ de classification plus élevés (embranchements, classes, ordres, familles...) o
 		s’agit d’une population sauvage. (UICN, 2000)</td>
 </tr>
 <tr>
-	<td>Sauvage partielle</td>
+	<td>Sauvage partiel</td>
 	<td>Population(s) d'un <a href="#gl_taxon">taxon</a> sauvage qui est renforcée artificiellement</td>
 </tr>
 <tr>
@@ -94,7 +94,7 @@ de classification plus élevés (embranchements, classes, ordres, familles...) o
 	<td>Naturalisé dangereux</td>
 	<td>
 		Population(s) d'un <a href="#gl_taxon">taxon</a> ayant fait l’objet d’une introduction par l’homme
-		engeandrant des conséquences néfastes et qui peut être non soutenu ou soutenu ;
+		engendrant des conséquences néfastes et qui peut être non soutenu ou soutenu ;
 	</td>
 </tr>
 <tr>
@@ -103,7 +103,7 @@ de classification plus élevés (embranchements, classes, ordres, familles...) o
 </tr>
 <tr>
 	<td>Sauvage réintroduit reproducteur</td>
-	<td>Population(s) d'un <a href="#gl_taxon">taxon</a> reproducteur qui a disparu, réintroduit à partir d’individus d’autres régions ;</td>
+	<td>Population(s) d'un <a href="#gl_taxon">taxon</a> reproducteur qui a disparu, réintroduite à partir d’individus d’autres régions ;</td>
 </tr>
 <tr>
 	<td>Endémique</td>
@@ -353,7 +353,7 @@ nombre de publications, nombre d'études, intensité de recherche, caractère d�
 <h3 id="gl_etat_pri_conv">État et priorité de conservation</h3>
 <p>Pour simplifier, l'état de conservation d'une part, et la priorité de la conservation d'autre part sont une traduction
 directe du degré de menace régional. Des ajustements de ces statuts ont souvent été  apportés de manière à tenir compte du
-niveau de protection et/ou de gestion des habitats de certains habitats, ainsi que des potentialités de recolonisation par
+niveau de protection et/ou de gestion des habitats, ainsi que des potentialités de recolonisation par
 certaines populations d'espèces en provenance des régions voisines.</p>
 <table>
 	<tr>
