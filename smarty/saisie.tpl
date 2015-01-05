@@ -19,7 +19,7 @@
 	</form>
 	<p>Deux étapes sont nécessaires à l'ouverture d'un nouveau compte observateur. Vous devez remplir le formulaire ci-contre. Vous recevrez un email de confirmation.</p>
 	<p>Dans ce message de confirmation vous trouverez un lien qui nous permettra de valider votre adresse email.</p>
-	<p>Il vous restera a accepter la charte du naturaliste pour obtenir votre mot de passe.</p>
+	<p>Il vous restera à accepter la charte du naturaliste pour obtenir votre mot de passe.</p>
 	<p>Attention, vous devez utiliser votre nom et prénom, pas de pseudonyme. Les comptes créés avec un pseudonyme seront désactivés.</p>
 	</div>
 </div>
