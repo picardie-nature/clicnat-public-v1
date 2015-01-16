@@ -19,6 +19,15 @@ define('LOCALE', 'fr_FR.UTF-8');
 if (!defined('ID_TRAVAIL_CARTE_COMMUNES'))
 	define('ID_TRAVAIL_CARTE_COMMUNES', 7);
 
+if (!defined('ID_TRAVAIL_CARTE_RESEAUX'))
+	define('ID_TRAVAIL_CARTE_RESEAUX', 8);
+
+if (!defined('PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX')) 
+	define('PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX',227);
+if (!defined('PROMONTOIRE2_ID_SELECTION_CARTO_RESEAUX')) 
+	define('PROMONTOIRE2_ID_SELECTION_CARTO_RESEAUX', 15572);
+
+
 require_once(SMARTY_DIR.'Smarty.class.php');
 require_once(OBS_DIR.'element.php');
 require_once(OBS_DIR.'espece.php');
@@ -145,6 +154,21 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('classes', $classes);
 	}
 
+	protected function before_carte_reseaux() {
+		require_once(OBS_DIR.'liste_espace.php');
+		require_once(OBS_DIR.'travaux.php');
+		$classes = array();
+		foreach (bobs_classe::get_classes() as $c) {
+			$classes[$c] = bobs_classe::get_classe_lib_par_lettre($c, true);
+		}
+		$travail = clicnat_travaux::instance($this->db, ID_TRAVAIL_CARTE_RESEAUX);
+		$reseaux = bobs_reseau::liste_reseaux($this->db);
+		$this->assign_by_ref("travail", $travail);
+		$this->assign_by_ref('classes', $classes);
+		$this->assign_by_ref('reseaux', $reseaux);
+	}
+
+
 	protected function before_carte_wms() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
@@ -157,7 +181,7 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'espace.php');
 		require_once(OBS_DIR.'wfs.php');
 		
-		$listes_public = array(3,224,234);
+		$listes_public = array(3,224,234,PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
 
 		$data = file_get_contents('php://input'); // contenu de _POST
 		$doc = new DomDocument();
@@ -451,6 +475,18 @@ class Promontoire extends clicnat_smarty {
 		);
 		require_once(OBS_DIR.'sld.php');
 		echo clicnat_sld_rampe::xml($params);
+		exit();
+	}
+
+	protected function before_sld_reseaux() {
+		require_once("classes_carte_reseaux.php");
+		require_once(OBS_DIR.'sld.php');
+		$liste_espaces = new clicnat_listes_espaces($this->db, PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
+
+		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 10, $teinte=0);
+		$doc->formatOutput = true; 
+		self::header_xml();
+		echo $doc->saveXML();
 		exit();
 	}
 
