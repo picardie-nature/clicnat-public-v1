@@ -26,7 +26,6 @@
 		<p>{$liste_espace} : {$liste_espace->mention}</p>
 		<h3>Téléchargement</h3>
 		<a href="#" class="btn btn-primary">Télécharger KML</a>
-
 	</div>
 </div>
 
@@ -35,9 +34,9 @@
 <script type="text/javascript" src="http://maps.picardie-nature.org/carto.js"></script>
 
 <script>
-var classes = new Array();
-{foreach from=$classes item=cl key=c}
-classes['classe_{$c}'] = "{$cl}";
+var reseaux = new Array();
+{foreach from=$reseaux item=r}
+reseaux['{$r->id}'] = "{$r}";
 {/foreach}
 {literal}
 function carte_ajout_layer_wfs(map, id_liste, titre, mention) {
@@ -76,13 +75,10 @@ OpenLayers.Request.GET({
 		$('#vues').html("");
 		styles = sld.namedLayers["liste_espace_{/literal}{$liste_espace->id_liste_espace}{literal}"].userStyles;
 		for (var i=0; i<styles.length;i++) {
-			if (styles[i].name.match(/^classe_.*/)) {
+			if (styles[i].name.match(/^.*_species/)) {
 				var cl = styles[i].name;
-				cl = cl.replace(/^classe_/,'').toLowerCase();
-				var img ="<img src=\"image/20x20_g_"+cl+".png\" alt=\""+styles[i].title+"\">";
-				$('#btn_vues').append("<button type=\"button\" class=\"btn btn-default btn-style\" title=\""+styles[i].title+"\"stylename=\""+styles[i].name+"\" >"+img+"</button>");
-			} else {
-				$('#btn_vues').append("<button type=\"button\" class=\"btn btn-default btn-style\" stylename=\""+styles[i].name+"\" >"+styles[i].title+"</button>");
+				cl = cl.replace(/_species$/,'').toLowerCase();
+				$('#btn_vues').append("<button type=\"button\" class=\"btn btn-default btn-style\" stylename=\""+styles[i].name+"\" >"+reseaux[cl]+"</button>");
 			}
 		}
 		$('.btn-style').click(function () {

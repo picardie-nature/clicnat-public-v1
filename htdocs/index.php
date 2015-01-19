@@ -157,14 +157,9 @@ class Promontoire extends clicnat_smarty {
 	protected function before_carte_reseaux() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
-		$classes = array();
-		foreach (bobs_classe::get_classes() as $c) {
-			$classes[$c] = bobs_classe::get_classe_lib_par_lettre($c, true);
-		}
 		$travail = clicnat_travaux::instance($this->db, ID_TRAVAIL_CARTE_RESEAUX);
 		$reseaux = bobs_reseau::liste_reseaux($this->db);
 		$this->assign_by_ref("travail", $travail);
-		$this->assign_by_ref('classes', $classes);
 		$this->assign_by_ref('reseaux', $reseaux);
 	}
 
@@ -479,11 +474,10 @@ class Promontoire extends clicnat_smarty {
 	}
 
 	protected function before_sld_reseaux() {
-		require_once("classes_carte_reseaux.php");
 		require_once(OBS_DIR.'sld.php');
 		$liste_espaces = new clicnat_listes_espaces($this->db, PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
 
-		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 10, $teinte=0);
+		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 10, 120);
 		$doc->formatOutput = true; 
 		self::header_xml();
 		echo $doc->saveXML();
