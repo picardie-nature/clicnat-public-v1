@@ -42,7 +42,10 @@ de classification plus élevés (embranchements, classes, ordres, familles...) o
 élevés (sous-espèces, variétés).</p>
 
 <h2 id="gl_consignees">Observation consignée dans la base naturaliste</h2>
-<p>C'est une observation saisie en ligne, ou importée dans la base de donnée. L'importation correspond à une intégration de données dans la base à partir d'un fichier (tableau) transmis par un observateur. </p>
+<p>C'est la liste des espèces observées accompagnée d'une référence spatiale et temporelle. Elle peut être complétée avec divers paramètres spécifiques à chaque espèce</p>
+
+<h2 id="gl_occurence">Occurence ou citation</h2>
+<p>Il s'agit d'une donnée relative à un ou plusieurs individus d'une même espèce accompagnée à minima d'une référence spatiale et temporelle.  Elle peut être complétée avec divers paramètres tel que le sexe, l'âge, le comportement...</p>
 
 <h2 id="gl_non_citee">Espèce non citée</h2>
 <p>Trois possibilités :
