@@ -477,7 +477,7 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'sld.php');
 		$liste_espaces = new clicnat_listes_espaces($this->db, PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
 
-		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 10, 120);
+		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 8, 120);
 		$doc->formatOutput = true; 
 		self::header_xml();
 		echo $doc->saveXML();

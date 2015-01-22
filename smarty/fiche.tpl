@@ -12,8 +12,6 @@ div.onglet_fiche_espece {
 #carte {
 	width:100%;
 	height:550px;
-/*	margin-left:15px;
-	margin-right:15px;*/
 }
 #carte_cont {
 	width:100%;
@@ -37,7 +35,6 @@ div.onglet_fiche_espece {
 	width: 60%;
 	margin-left: 20%;
 	margin-top: 275px;
-
 }
 </style>
 <script>
@@ -214,7 +211,6 @@ function page_fiche_init() {
 		ul.children().removeClass('active');
 		li.addClass('active');
 		fiche_espece_onglet_actif(lien.attr("onglet"));
-		console.log(lien.attr("onglet"));
 		if (lien.attr("onglet") == "fiche_repartition") {
 			if (!carte) {
 				var id_espece = $('#espece').attr('id_espece');
