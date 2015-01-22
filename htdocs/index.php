@@ -135,11 +135,19 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
 
-		if ($_GET['id'] == ID_TRAVAIL_CARTE_COMMUNES)
-			$this->redirect('?page=carte_communes');
+		switch ($_GET['id']) {
+			case ID_TRAVAIL_CARTE_COMMUNES:
+				$this->redirect('?page=carte_communes');
+				break;
+			case ID_TRAVAIL_CARTE_RESEAUX:
+				$this->redirect('?tpage=carte_reseaux');
+				break;
+			default:
+				$travail = clicnat_travaux::instance($this->db, $_GET['id']);
+				$this->assign_by_ref("travail", $travail);
+				break;
+		}
 
-		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
-		$this->assign_by_ref("travail", $travail);
 	}
 
 	protected function before_carte_communes() {

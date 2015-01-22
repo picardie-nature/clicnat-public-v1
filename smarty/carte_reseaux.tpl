@@ -16,16 +16,14 @@
 			<div id="carte_cont"> 
 				<div id="carte"></div>
 			</div>
-				<div id="chargement-en-cours">
-					<div class="progress progress-striped active">
-						<div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-					</div>
+			<div id="chargement-en-cours">
+				<div class="progress progress-striped active">
+					<div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
 				</div>
-
+			</div>
 		</div>	
 		<h3>Description</h3>
 		<p>{$travail->description|markdown}</p>
-
 	</div>
 	<div class="col-sm-3">
 		<h3>Légende</h3>
@@ -114,7 +112,7 @@ function page_init() {
 						var dl = $('#legende');
 						dl.html("");
 						for (var j=0;j<styles[i].rules.length;j++) {
-							dl.append("<div>"+styles[i].rules[j].title+"<span style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
+							dl.append("<div>"+styles[i].rules[j].title+"<span class='pull-left' style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
 						}
 						break;
 					}

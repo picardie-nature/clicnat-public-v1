@@ -78,9 +78,8 @@ function page_init() {
 		success: function (r) {
 			var f = new OpenLayers.Format.SLD();
 			sld = f.read(r.responseXML || r.responseText);
-			
 			$('#vues').html("");
-			styles = sld.namedLayers["liste_espace_124"].userStyles;
+			styles = sld.namedLayers["liste_espace_"+id_liste_espace].userStyles;
 			for (var i=0; i<styles.length;i++) {
 				if (styles[i].name.match(/^classe_.*/)) {
 					var cl = styles[i].name;
@@ -108,7 +107,7 @@ function page_init() {
 						var dl = $('#legende');
 						dl.html("");
 						for (var j=0;j<styles[i].rules.length;j++) {
-							dl.append("<div>"+styles[i].rules[j].title+"<span style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
+							dl.append("<div>"+styles[i].rules[j].title+"<span class='pull-left' style='background-color:"+styles[i].rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
 						}
 						break;
 					}
