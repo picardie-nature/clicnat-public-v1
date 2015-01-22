@@ -163,12 +163,19 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('reseaux', $reseaux);
 	}
 
-
 	protected function before_carte_wms() {
 		require_once(OBS_DIR.'liste_espace.php');
 		require_once(OBS_DIR.'travaux.php');
 		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
 		$this->assign_by_ref("travail", $travail);
+	}
+
+	private function espace_carte_wfs_cache_file($id_liste) {
+		return "/tmp/espace_carte_wfs_getfeature_$id_liste.xml";
+	}
+	
+	private function espace_carte_sld_cache_file($id_liste) {
+		return "/tmp/espace_carte_sld_$id_liste.xml";
 	}
 
 	protected function before_liste_espace_carte_wfs() {
@@ -184,13 +191,17 @@ class Promontoire extends clicnat_smarty {
 		header('Content-type: text/xml');
 		$gf = new clicnat_wfs_get_feature($this->db, $doc);
 		$sel = $gf->get_liste_espaces();
-		//$u = $this->get_user_session();
-		//if (($u->id_utilisateur == $sel->id_utilisateur) || $sel->ref)
-		if (array_search($sel->id_liste_espace, $listes_public) !== false)
-			echo $gf->reponse()->saveXML();
-		else
+		if (array_search($sel->id_liste_espace, $listes_public) !== false) {
+			$fichier_cache = $this->espace_carte_wfs_cache_file($sel->id_liste_espace);
+			if (!file_exists($fichier_cache))
+				file_put_contents($fichier_cache, $gf->reponse()->saveXML());
+			header('Content-Length: '.filesize($fn));
+			echo file_get_contents($fichier_cache);
+			exit(0);
+		} else {
 			//WFS Exception
 			throw new Exception('WFS Exception...');
+		}
 		exit();
 	}
 	
@@ -463,10 +474,12 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_sld_communes() {
 		self::header_xml();
+		$travail = get_travail($this->db, ID_TRAVAIL_CARTE_COMMUNES);
+		$liste_espace = $travail->liste_espace();
 		require_once("classes.php");
 		$params = array(
 			"styles" => $classes,
-			"layername" => "liste_espace_124"
+			"layername" => "liste_espace_{$liste_espace->id_liste_espace}"
 		);
 		require_once(OBS_DIR.'sld.php');
 		echo clicnat_sld_rampe::xml($params);
@@ -475,12 +488,18 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_sld_reseaux() {
 		require_once(OBS_DIR.'sld.php');
-		$liste_espaces = new clicnat_listes_espaces($this->db, PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
 
-		$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 8, 120);
-		$doc->formatOutput = true; 
+		$fichier_cache = $this->espace_carte_sld_cache_file(PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
+		
+		if (!file_exists($fichier_cache)) {
+			$liste_espaces = new clicnat_listes_espaces($this->db, PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX);
+	
+			$doc = clicnat_sld_rampe::liste_espaces_attrs_min_max($liste_espaces, "/(.+)_species/", 8, 120);
+			$doc->formatOutput = true; 
+			file_put_contents($fichier_cache, $doc->saveXML());
+		}
 		self::header_xml();
-		echo $doc->saveXML();
+		echo file_get_contents($fichier_cache);
 		exit();
 	}
 

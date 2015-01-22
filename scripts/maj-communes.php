@@ -109,4 +109,8 @@ foreach ($liste->get_espaces() as $commune) {
 	}
 	echo ".\n";
 }
+
+foreach (glob(sprintf("/tmp/espace_carte_*_%d.xml", $liste->id_liste_espace)) as $f) {
+	unlink($f);
+}
 ?>

@@ -97,4 +97,8 @@ foreach (bobs_reseau::liste_reseaux($db) as $reseau) {
 		}
 	}
 }
+
+foreach (glob(sprintf("/tmp/espace_carte_*_%d.xml",PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX)) as $f) {
+	unlink($f);
+}
 ?>
