@@ -140,7 +140,7 @@ class Promontoire extends clicnat_smarty {
 				$this->redirect('?page=carte_communes');
 				break;
 			case ID_TRAVAIL_CARTE_RESEAUX:
-				$this->redirect('?tpage=carte_reseaux');
+				$this->redirect('?page=carte_reseaux');
 				break;
 			default:
 				$travail = clicnat_travaux::instance($this->db, $_GET['id']);
