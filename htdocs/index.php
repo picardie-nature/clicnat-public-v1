@@ -27,6 +27,8 @@ if (!defined('PROMONTOIRE2_ID_LISTE_CARTO_RESEAUX'))
 if (!defined('PROMONTOIRE2_ID_SELECTION_CARTO_RESEAUX')) 
 	define('PROMONTOIRE2_ID_SELECTION_CARTO_RESEAUX', 15572);
 
+if (!defined('URL_API'))
+	define('URL_API', 'https://ssl.picardie-nature.org/api-clicnat/');
 
 require_once(SMARTY_DIR.'Smarty.class.php');
 require_once(OBS_DIR.'element.php');
@@ -83,8 +85,14 @@ class Promontoire extends clicnat_smarty {
 		$f = file_get_contents("textes_legislation_retenus.txt");
 		$textes = explode("\n",$f);
 		$this->assign_by_ref("textes_legislation_retenus", $textes);
+	}
 
-
+	protected function before_kml_repartition() {
+		$url = sprintf("%s?action=taxon_repartition_kml&id=%d", URL_API, $_GET['id']);
+		self::header_kml();
+		self::header_filename(sprintf("repartition_esp_id%d_%s.kml", $_GET['id'], strftime("%Y%m%d")));
+		echo file_get_contents($url);
+		exit();
 	}
 
 	protected function before_fiche_communes_csv() {

@@ -599,6 +599,7 @@ $(document).ready(page_fiche_init);
 				<h4>Données</h4>
 				<div class="checkbox"><label><input checked type="radio" name="l" id="5ans" class="ctrl_carte">Répartition par pas de 5 ans</label></div>
 				<div class="checkbox"><label><input type="radio" name="l" id="annee" class="ctrl_carte">Répartition par année</label></div>
+				<div><a class="btn btn-primary" href="?page=kml_repartition&id={$espece->id_espece}">Télécharger les données de la carte au format KML</a></div>
 			</div>
 		</div>
 		<div class="col-sm-4">
