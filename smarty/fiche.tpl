@@ -608,23 +608,6 @@ $(document).ready(page_fiche_init);
 				<div class="checkbox"><label><input type="radio" name="f" id="photo" class="ctrl_carte">Photographie aérienne</label></div>
 			</div>
 		</div>
-		<!--
-		<div id="dlg-legende" title="En savoir plus sur les classes utilisées">
-			<b>Dernière observation avant {$borne_b}</b>
-			<p>Les données de plus de 10 ans sont considérées comme très anciennes
-			   de part l'évolution des milieux qui a pu survenir durant ce laps
-			   de temps, le changement de statuts des espèces, etc.</p>
-			<b>Dernière observation entre {$borne_b} et {$borne_a}</b>
-			<p>Une donnée remontant à plus de 5 ans
-			   mérite actualisation afin de vérifier la présence ou l'absence de
-			   l'espèce.</p>
-			<b>Dernière observation après {$borne_a}</b>
-			<p>Les données naturalistes de moins de 5 ans
-			   peuvent être considérées comme des données récentes. L'actualisation
-			   des informations est ici moins prioritaire, hormis pour les espèces
-			   en liste rouge régionale.</p>		  
-		</div>
-		-->
 	</div>
 	{if $espece->get_restitution_ok($niveau_restitution)}
 	<div class="row">
