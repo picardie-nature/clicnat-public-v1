@@ -449,7 +449,8 @@ $(document).ready(page_fiche_init);
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $n_texte eq 0}
-			<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations()} fois dans la base de données.</p>
+			{* 2 = nb_citations valide *}
+			<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations(2)} fois dans la base de données.</p>
 			{if $espece->ordre}
 				<p>Il appartient à l'ordre des {$espece->ordre}
 				{if $espece->famille}et à la famille des {$espece->famille}{/if}
