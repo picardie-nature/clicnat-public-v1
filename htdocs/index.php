@@ -16,6 +16,7 @@ else
 
 define('SESS', 'PROMONTOIRE2');
 define('LOCALE', 'fr_FR.UTF-8');
+
 if (!defined('ID_TRAVAIL_CARTE_COMMUNES'))
 	define('ID_TRAVAIL_CARTE_COMMUNES', 7);
 
@@ -155,7 +156,14 @@ class Promontoire extends clicnat_smarty {
 				$this->assign_by_ref("travail", $travail);
 				break;
 		}
+	}
 
+	protected function before_carte_kml() {
+		$url = sprintf("%s?action=espaces_liste_publique_kml&id_liste=%d", URL_API, $_GET['id']);
+		self::header_kml();
+		self::header_filename(sprintf("espaces_liste_%d_%s.kml", $_GET['id'], strftime("%Y%m%d")));
+		echo file_get_contents($url);
+		exit();
 	}
 
 	protected function before_carte_communes() {

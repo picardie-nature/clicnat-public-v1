@@ -15,7 +15,7 @@
 		<h3>Attribution</h3>
 		<p>{$liste_espace} : {$liste_espace->mention}</p>
 		<h3>Téléchargement</h3>
-		<a href="#" class="btn btn-primary">Télécharger KML</a>
+		<a href="?page=carte_kml&id={$liste_espace->id_liste_espace}" class="btn btn-primary">Télécharger KML</a>
 	</div>
 
 </div>
