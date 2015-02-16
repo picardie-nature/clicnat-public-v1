@@ -33,6 +33,7 @@
 		<ul class="list-group" id="commune_liste"></ul>
 		<h3>Attribution</h3>
 		<p>{$liste_espace} : {$liste_espace->mention}</p>
+		<a href="?page=carte_kml&id={$liste_espace->id_liste_espace}" class="btn btn-primary">Télécharger KML</a>
 	</div>
 </div>
 
