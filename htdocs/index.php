@@ -54,9 +54,11 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_travaux() {
 		$this->assign('travaux', clicnat_travaux::liste($this->db));
+		self::header_cacheable(600);
 	}
 
 	protected function before_fiche() {
+		self::header_cacheable(3600);
 		bobs_element::cli($_GET['id']);
 		if (empty($_GET['id']))
 		    throw new InvalidArgumentException('numéro espèce');
@@ -92,6 +94,7 @@ class Promontoire extends clicnat_smarty {
 		$url = sprintf("%s?action=taxon_repartition_kml&id=%d", URL_API, $_GET['id']);
 		self::header_kml();
 		self::header_filename(sprintf("repartition_esp_id%d_%s.kml", $_GET['id'], strftime("%Y%m%d")));
+		self::header_cacheable(3600*3);
 		echo file_get_contents($url);
 		exit();
 	}
@@ -117,7 +120,8 @@ class Promontoire extends clicnat_smarty {
 
 		$nom = strtolower($espece->__toString());
 		$nom = str_replace(array(" ;,'"), array("____"),$nom);
-		$this->header_csv("communes_$nom.csv");
+		self::header_csv("communes_$nom.csv");
+		self::header_cacheable(3600*3);
 		fputcsv($fo,array("code_insee","nom","dernière année","url"));
 		foreach (array("2","60","80") as $dept) {
 			$l = $espece->entrepot_liste_communes_presence($dept);
@@ -138,6 +142,7 @@ class Promontoire extends clicnat_smarty {
 	protected function before_definitions() {
 		$especes = bobs_espece::liste_especes_sensibles($this->db);
 		$this->assign_by_ref('ls', $especes);
+		self::header_cacheable(3600*3);
 	}
 
 	protected function before_carte_wfs() {
@@ -156,12 +161,14 @@ class Promontoire extends clicnat_smarty {
 				$this->assign_by_ref("travail", $travail);
 				break;
 		}
+		self::header_cacheable(3600*3);
 	}
 
 	protected function before_carte_kml() {
 		$url = sprintf("%s?action=espaces_liste_publique_kml&id_liste=%d", URL_API, $_GET['id']);
 		self::header_kml();
 		self::header_filename(sprintf("espaces_liste_%d_%s.kml", $_GET['id'], strftime("%Y%m%d")));
+		self::header_cacheable(3600*3);
 		echo file_get_contents($url);
 		exit();
 	}
@@ -176,6 +183,7 @@ class Promontoire extends clicnat_smarty {
 		$travail = clicnat_travaux::instance($this->db, ID_TRAVAIL_CARTE_COMMUNES);
 		$this->assign_by_ref("travail", $travail);
 		$this->assign_by_ref('classes', $classes);
+		self::header_cacheable(3600*3);
 	}
 
 	protected function before_carte_reseaux() {
@@ -185,6 +193,7 @@ class Promontoire extends clicnat_smarty {
 		$reseaux = bobs_reseau::liste_reseaux($this->db);
 		$this->assign_by_ref("travail", $travail);
 		$this->assign_by_ref('reseaux', $reseaux);
+		self::header_cacheable(3600*3);
 	}
 
 	protected function before_carte_wms() {
@@ -212,7 +221,8 @@ class Promontoire extends clicnat_smarty {
 		$data = file_get_contents('php://input'); // contenu de _POST
 		$doc = new DomDocument();
 		@$doc->loadXML($data);
-		header('Content-type: text/xml');
+		self::header_xml();
+		self::header_cacheable(3600*3);
 		$gf = new clicnat_wfs_get_feature($this->db, $doc);
 		$sel = $gf->get_liste_espaces();
 		if (array_search($sel->id_liste_espace, $listes_public) !== false) {
@@ -259,11 +269,13 @@ class Promontoire extends clicnat_smarty {
 		$this->assign_by_ref('commune', $espace);
 		$this->assign_by_ref('titre_page', $espace);
 		$this->assign_by_ref('classes_libs', $classes_libs);
+		self::header_cacheable(3600*3);
 	}
 
 	protected function before_commune_especes_csv() {
 		$espace = get_espace_commune($this->db, (int)$_GET['id']);
-		$this->header_csv("especes_{$espace->nom}.csv");
+		self::header_csv("especes_{$espace->nom}.csv");
+		self::header_cacheable(3600*3);
 		$f = fopen("php://output","w");
 		$cols = array("id_espece","cd_nom","classe","ordre","famille","nom_s","nom_v","menace","rarete","pas_affiché_liste");
 		fputcsv($f, $cols);
@@ -299,6 +311,7 @@ class Promontoire extends clicnat_smarty {
 		$especes = bobs_espece::liste_rouge($this->db);
 		$this->assign_by_ref('rl', $especes);
 		$this->assign('titre_page', 'Liste rouge régionale');
+		self::header_cacheable();
 	}
 
 	/**
@@ -309,6 +322,7 @@ class Promontoire extends clicnat_smarty {
 		$especes = bobs_espece::liste_sensibles($this->db);
 		$this->assign_by_ref('ls', $especes);
 		$this->assign('titre_page', 'Liste des espèces sensibles');
+		self::header_cacheable();
 	}
 
 	/*
@@ -319,6 +333,7 @@ class Promontoire extends clicnat_smarty {
 		$especes = bobs_espece::liste_determinantes_znieff($this->db);
 		$this->assign_by_ref('lz', $especes);
 		$this->assign('titre_page', 'Liste des espèces déterminantes ZNIEFF');
+		self::header_cacheable();
 	}
 
 
@@ -344,9 +359,10 @@ class Promontoire extends clicnat_smarty {
 		$f = fopen($fname, "w");
 		$especes->csv($f);
 		fclose($f);
-		$this->header_csv("liste_espece_{$_GET['liste']}.csv", filesize($fname));
+		self::header_csv("liste_espece_{$_GET['liste']}.csv", filesize($fname));
 		echo file_get_contents($fname);
 		unlink($fname);
+		self::header_cacheable();
 		exit();
 	}
 
@@ -358,12 +374,14 @@ class Promontoire extends clicnat_smarty {
 		$especes = bobs_espece::liste_invasives($this->db);
 		$this->assign_by_ref('li', $especes);
 		$this->assign('titre_page', 'Liste des espèces sensibles');
+		self::header_cacheable();
 	}
 	
 	protected function before_classe() {
 		require_once(OBS_DIR.'espece.php');
 		$classe = new bobs_classe($this->db, $_GET['classe']);
 		$this->assign_by_ref('classe', $classe);
+		self::header_cacheable(3600);
 	}
 
 	/**
@@ -383,41 +401,11 @@ class Promontoire extends clicnat_smarty {
 		echo "Code introuvable";    	
 		exit();
 	}
-    
-	protected function before_autocomplete_espece() {
-		bobs_element::cls($_GET['term']);
-		require_once(OBS_DIR.'espece.php');
-		$sans_image = isset($_GET['sans_image']);
-		$t = bobs_espece::recherche_par_nom($this->db, $_GET['term']);
-		$r = array();
-		foreach ($t as $esp) {
-			$r[] = array(
-		    		'label'=> ($sans_image?"{$esp['nom_f']} {$esp['nom_s']}":$esp['nom_f'].'<br/><i>'.$esp['nom_s'].'</i>'), 
-				'value' => $esp['id_espece'],
-				'classe' => strtolower($esp['classe'])
-			);
-		}
-
-		$t_obj = bobs_espece::index_recherche($this->db, $_GET['term']);
-		foreach ($t_obj['especes'] as $obj) {
-			$r[] = array(
-				'label' => ($sans_image?"{$obj->nom_f} {$obj->nom_s}":"{$obj->nom_f} <br/><i>{$obj->nom_s}</i>"),
-				'value' => $obj->id_espece,
-				'classe' => strtolower($obj->classe)
-			);
-		}
-		
-		foreach($r as $k=>$v) {
-			$r[$k]['label'] = $sans_image?$r[$k]['label']:"<img style=\"float:right;\" src=\"image/30x30_g_{$r[$k]['classe']}.png\"/>{$r[$k]['label']}";
-		}
-
-		echo json_encode($r);
-		exit();
-	}
-
+	
 	protected function before_wfs() {
 		require_once(OBS_DIR.'wfs.php');
-		$this->header_xml();
+		self::header_xml();
+		self::header_cacheable(3600*3);
 		$op = clicnat_wfs_op($this->db, $_GET);
 		echo $op->reponse()->saveXML();
 		exit();
@@ -425,6 +413,7 @@ class Promontoire extends clicnat_smarty {
 	}
 	
 	protected function before_partenaires() {
+		self::header_cacheable(86400*10);
 		$this->assign('n_observateurs', file_get_contents('/var/cache/bobs/promontoire.n_observateurs'));
 		$this->assign('n_observateurs_2006', file_get_contents('/var/cache/bobs/promontoire.n_observateurs_2006'));
 		$n_total = file_get_contents('/var/cache/bobs/promontoire.n_citations');
@@ -443,9 +432,7 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_img_esp() {
 		require_once(OBS_DIR.'/docs.php');
-		header('Cache-Control: public, max-age=864000');
-		header('Expires:');
-		header('Pragma:');
+		self::header_cacheable(86400*10);
 		$im = new bobs_document_image($_GET['id']);
 		$im->get_image_redim(250,0);
 		exit();
@@ -453,9 +440,7 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_img_esp_grand() {
 		require_once(OBS_DIR.'/docs.php');
-		header('Cache-Control: public, max-age=864000');
-		header('Expires:');
-		header('Pragma:');
+		self::header_cacheable(86400*10);
 		$im = new bobs_document_image($_GET['id']);
 		$im->get_image_redim(600,0);
 		exit();
@@ -474,7 +459,7 @@ class Promontoire extends clicnat_smarty {
 		 * 	RewriteRule ^(.*)/occtax/(.*)$ $1/?page=occtax&guid=$2 [PT]
 		 */
 		try {
-			$this->header_xml();
+			self::header_xml();
 			if (!isset($_GET['guid']))
 				throw new Exception('guid');
 
@@ -491,7 +476,7 @@ class Promontoire extends clicnat_smarty {
 			echo $doc->saveXML();
 			exit();
 		} catch (Exception $e) {
-			$this->header_404();
+			self::header_404();
 			echo "<i>occurence inconnue</i>";
 		}
 	}
@@ -525,6 +510,14 @@ class Promontoire extends clicnat_smarty {
 		self::header_xml();
 		echo file_get_contents($fichier_cache);
 		exit();
+	}
+
+	protected function before_accueil() {
+		self::header_cacheable(3600);
+	}
+
+	protected function before_listes() {
+		self::header_cacheable(3600);
 	}
 
     
