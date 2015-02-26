@@ -247,6 +247,7 @@ class Promontoire extends clicnat_smarty {
 		$espace = get_espace_commune($this->db, $_GET['id']);
 		$classes = bobs_espece::get_classes();
 		$compteurs = array();
+		$n_especes = 0;
 		foreach ($classes as $c) {
 			$compteurs[$c]['n'] = 0;
 			$compteurs[$c]['nc'] = 0;
@@ -257,6 +258,7 @@ class Promontoire extends clicnat_smarty {
 		$especes->trier_par_classe_ordre_famille_nom();
 		foreach ($especes as $esp) {
 			if (!$esp->exclure_restitution) {
+				$n_especes++;
 				$compteurs[$esp->classe]['n']++;
 				if (!$esp->get_restitution_ok(bobs_espece::restitution_public))
 					$compteurs[$esp->classe]['nc']++;
@@ -264,7 +266,7 @@ class Promontoire extends clicnat_smarty {
 		}
 		$this->assign('groupes', bobs_espece::get_classes());
 		$this->assign_by_ref('liste_especes', $especes);
-		$this->assign_by_ref('n_especes', $especes->count());
+		$this->assign_by_ref('n_especes', $n_especes);
 		$this->assign_by_ref('compteurs', $compteurs);
 		$this->assign_by_ref('commune', $espace);
 		$this->assign_by_ref('titre_page', $espace);
