@@ -434,16 +434,20 @@ class Promontoire extends clicnat_smarty {
 
 	protected function before_img_esp() {
 		require_once(OBS_DIR.'/docs.php');
-		self::header_cacheable(86400*10);
 		$im = new bobs_document_image($_GET['id']);
+		if ($im->est_en_attente())
+			throw new Exception("pas encore vérifiée");
+		self::header_cacheable(86400*10);
 		$im->get_image_redim(250,0);
 		exit();
 	}
 
 	protected function before_img_esp_grand() {
 		require_once(OBS_DIR.'/docs.php');
-		self::header_cacheable(86400*10);
 		$im = new bobs_document_image($_GET['id']);
+		if ($im->est_en_attente())
+			throw new Exception("pas encore vérifiée");
+		self::header_cacheable(86400*10);
 		$im->get_image_redim(600,0);
 		exit();
 	}
