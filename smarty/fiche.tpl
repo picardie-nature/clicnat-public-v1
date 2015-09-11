@@ -74,7 +74,8 @@ function layer_repartition(id_espece) {
 }
 
 function layer_repartition_5ans(features) {
-	var y = 2013;
+	var d = new Date();
+	var y = d.getFullYear();
 	var b2 = y-5;
 	var b1 = y-10;
 
