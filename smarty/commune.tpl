@@ -1,6 +1,6 @@
-{include file=head.tpl}
-{include file=menaces.tpl}
-{include file=raretes.tpl}
+{include file="head.tpl"}
+{include file="menaces.tpl"}
+{include file="raretes.tpl"}
 <div class="row">
 	<div class="col-sm-12">
 		<h1 id="commune">{$commune->nom2} ({$commune->dept|string_format:"%02d"}) <a href="#" id="btn_rech" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a>
@@ -102,7 +102,7 @@
 					<div class="col-xs-2">
 						{if $r.categorie}
 							<!-- <img style="cursor: pointer;" src="image/min-{$r.categorie|lower}.png" onclick="javascript:ouvre_statut('{$r.categorie}');"/>-->
-							{$r.categorie}
+							<a href="javascript:ouvre_statut('{$r.categorie}');">{$r.categorie}</a>
 						{else}
 							&nbsp;
 						{/if}
@@ -164,4 +164,4 @@ init();
 //{/literal}
 </script>
 <div style="clear:both;"></div>
-{include file=foot.tpl}
+{include file="foot.tpl"}

@@ -44,8 +44,6 @@ if (!file_exists(SMARTY_CACHEDIR_PROMONTOIRE2)) {
 }
 
 class Promontoire extends clicnat_smarty {
-	protected $db;
-    
 	public function __construct($db) {
 		setlocale(LC_ALL, LOCALE);	
 		parent::__construct($db, SMARTY_TEMPLATE_PROMONTOIRE2, SMARTY_COMPILE_PROMONTOIRE2, SMARTY_CACHEDIR_PROMONTOIRE2, '/tmp/clicnat_cache_public2');

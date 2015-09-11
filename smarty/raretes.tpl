@@ -2,7 +2,7 @@
 //{literal}
 function ouvre_rare(st)
 {
-	J('#R_'+st).dialog({modal: true, width:320, height:200, buttons: {Fermer: function (e) {J(this).dialog('close');}}});
+	$('#R_'+st).dialog({modal: true, width:320, height:200, buttons: {Fermer: function (e) {$(this).dialog('close');}}});
 }
 //{/literal}
 </script>
