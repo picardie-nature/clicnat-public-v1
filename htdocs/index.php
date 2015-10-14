@@ -35,6 +35,7 @@ require_once(SMARTY_DIR.'Smarty.class.php');
 require_once(OBS_DIR.'element.php');
 require_once(OBS_DIR.'espece.php');
 require_once(OBS_DIR.'smarty.php');
+require_once(OBS_DIR.'reseau.php');
 require_once(OBS_DIR.'travaux.php');
 
 $context = "promontoire";
