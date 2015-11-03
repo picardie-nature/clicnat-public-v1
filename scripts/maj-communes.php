@@ -19,6 +19,9 @@ get_db($db);
 if (!defined('PROMONTOIRE2_ID_LISTE_COMMUNES'))
 	throw new Exception("il faut créer une liste d'espace et enregistrer son numéro dans config.php PROMONTOIRE2_ID_LISTE_COMMUNES");
 
+if (!defined('PROMONTOIRE2_DEPTS_LISTE_COMMUNES'))
+	throw new Exception("il faut définir la liste des départements");
+
 $id_liste = PROMONTOIRE2_ID_LISTE_COMMUNES;
 $liste = new clicnat_listes_espaces($db, $id_liste);
 
@@ -53,7 +56,7 @@ $liste = new clicnat_listes_espaces($db, $id_liste);
 // ajout des communes
 $communes = $liste->get_espaces();
 if ($communes->count() == 0) {
-	foreach (array('80','60','02') as $dept) {
+	foreach (explode(",",PROMONTOIRE2_DEPTS_LISTE_COMMUNES) as $dept) {
 		foreach(bobs_espace_commune::liste_pour_departement($db, $dept) as $commune) {
 			$liste->ajouter($commune->id_espace);
 		}
