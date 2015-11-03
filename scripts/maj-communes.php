@@ -113,4 +113,9 @@ foreach ($liste->get_espaces() as $commune) {
 foreach (glob(sprintf("/tmp/espace_carte_*_%d.xml", $liste->id_liste_espace)) as $f) {
 	unlink($f);
 }
+
+if (file_exists("/tmp/communes.kml"))
+	unlink("/tmp/communes.kml");
+$kml = $liste->export_kml();
+$kml->save("/tmp/communes.kml");
 ?>
