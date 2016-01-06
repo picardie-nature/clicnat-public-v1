@@ -53,13 +53,10 @@ function layer_repartition(id_espece) {
 	var resolution = 5000;
 	var l = new OpenLayers.Layer.Vector("Répartition par année", {
 		strategies: [new OpenLayers.Strategy.Fixed(), new OpenLayers.Strategy.Filter()],
-		projection: new OpenLayers.Projection("EPSG:2154"),
-		protocol: new OpenLayers.Protocol.WFS({
-			"url": "/wfs_repartition",
-			"featureType": "species"+id_espece+"crs2154res"+resolution+"m",
-			"featureNS": "http://mapserver.gis.umn.edu/mapserver",
-			"srsName": "EPSG:2154",
-			"version": "1.1.0",
+		projection: new OpenLayers.Projection("EPSG:4326"),
+		protocol: new OpenLayers.Protocol.HTTP({
+			url: '?page=kml_repartition&id='+id_espece,
+			format: new OpenLayers.Format.KML({extractAttributes: true})
 		}),
 		styleMap: annees_style(2012)
 	});
@@ -129,8 +126,8 @@ function layer_repartition_5ans(features) {
 	var yok = {};
 	annees = []; // pas de mot clé "var" (global)
 	for (var i=0; i<features.length; i++) {
-		var y = parseInt(features[i].data["annee"]);
-		var id_carre = features[i].data["x0"]+"-"+features[i].data["y0"];
+		var y = parseInt(features[i].data["year"].value);
+		var id_carre = features[i].data["x0"].value+"-"+features[i].data["y0"].value;
 		var per = pc;
 		if (y < b1) {
 			per = pa;
