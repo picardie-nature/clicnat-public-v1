@@ -432,12 +432,20 @@ $(document).ready(page_fiche_init);
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->menace}
-			<h3>Menaces potentielles</h3>
+			{if $espece->invasif}
+				<h3>Impact potentiels</h3>
+			{else}
+				<h3>Menaces potentielles</h3>
+			{/if}
 			<p class="text-justify">{$espece->menace}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
 		{if $espece->action_conservation}
-			<h3>Actions de conservation</h3>
+			{if $espece->invasif}
+				<h3>Actions de lutte</h3>
+			{else}
+				<h3>Actions de conservations</h3>
+			{/if}
 			<p class="text-justify">{$espece->action_conservation}</p>
 			{assign var=n_texte value=$n_texte+1}
 		{/if}
