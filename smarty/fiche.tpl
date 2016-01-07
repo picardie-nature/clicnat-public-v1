@@ -45,8 +45,13 @@ var annees = false;
 var annees_auto = false;
 
 function fiche_espece_onglet_actif(id) {
-	$('.onglet_fiche_espece').hide();
-	$('#'+id).show();
+	var onglets = $('.b_onglets');
+	for (var i=0; i<onglets.length; i++) {
+		if ($(onglets[i]).attr('onglet') == id) {
+			$('.onglet_fiche_espece').hide();
+			$(onglets[i]).click();
+		}
+	}
 }
 
 function layer_repartition(id_espece) {
@@ -208,7 +213,9 @@ function page_fiche_init() {
 		var ul = li.parent();
 		ul.children().removeClass('active');
 		li.addClass('active');
-		fiche_espece_onglet_actif(lien.attr("onglet"));
+		$('.onglet_fiche_espece').hide();
+		$('#'+lien.attr("onglet")).show();
+
 		if (lien.attr("onglet") == "fiche_repartition") {
 			if (!carte) {
 				var id_espece = $('#espece').attr('id_espece');
@@ -227,7 +234,6 @@ function page_fiche_init() {
 			}
 		}
 	});
-	fiche_espece_onglet_actif("fiche_resume");
 	$('#btn_rech').click(function () {
 		$("#div_rech_espece").toggle(
 			function () {
@@ -305,6 +311,36 @@ function page_fiche_init() {
 		$('#mod_photo_auteur').html("&copy; "+$(this).attr('auteur'));
 	});
 
+	if (window.location.hash) {
+		switch (window.location.hash.split('#')[1]) {
+			case 'fiche_repartition':
+			case 'fiche_resume':
+			case 'fiche_medias':
+			case 'fiche_biblio':
+				fiche_espece_onglet_actif(window.location.hash.split('#')[1]);
+				break;
+			default:
+				fiche_espece_onglet_actif("fiche_resume");
+		}
+	} else {
+		fiche_espece_onglet_actif("fiche_resume");
+	}
+
+	$(".autre_fiche_meme_onglet").click(function (e) {
+		e.preventDefault();
+		var btns = $('.b_onglets');
+		for (var i=0;i<btns.length;i++) {
+			var li = $(btns[i]).parent();
+			if ($(li).hasClass('active')) {
+				var href = $(this).attr('href');
+				if (href.match("/#/")) {
+					href = href.split('#')[0];
+				}
+				document.location.href = href+"#"+$(btns[i]).attr('onglet');
+			}
+		}
+	});
+
 	window.setInterval(function () {
 			if (annees_auto) {
 				position_annee = (position_annee+1)%annees.length;
@@ -354,6 +390,18 @@ $(document).ready(page_fiche_init);
 			</span>
 			<a href="#" id="btn_rech" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a>
 		</h1>
+		<div class="liste_famille">
+			{assign var=parent value=$espece->taxon_parent()}
+			{if $espece->taxon_parent()}<span class="glyphicon glyphicon-arrow-up"></span> <a class="autre_fiche_meme_onglet" href="?page=fiche&id={$parent->id_espece}">{$parent}</a>{/if} 
+			<span class="glyphicon glyphicon-arrow-right"></span>
+			{foreach from=$espece->taxons_voisins() item=e}
+				<a class="autre_fiche_meme_onglet" href="?page=fiche&id={$e->id_espece}">{$e}</a> 
+			{/foreach}
+			<span class="glyphicon glyphicon-arrow-down"></span>
+			{foreach from=$espece->taxons_enfants() item=e}
+				<a class="autre_fiche_meme_onglet" href="?page=fiche&id={$e->id_espece}">{$e}</a>
+			{/foreach}
+		</div>
 	</div>
 	<div class="well" id="div_rech_espece" style="display:none;">
 		<div class="form-group">
@@ -457,9 +505,9 @@ $(document).ready(page_fiche_init);
 		{if $n_texte eq 0}
 			{* 2 = nb_citations valide *}
 			<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations(2)} fois dans la base de données.</p>
-			{if $espece->ordre}
+			{if $espece->ordre && $espece->ordre != " "}
 				<p>Il appartient à l'ordre des {$espece->ordre}
-				{if $espece->famille}et à la famille des {$espece->famille}{/if}
+				{if $espece->famille && $espece->famille!= " "}et à la famille des {$espece->famille}{/if}
 			{/if}
 		{/if}
 	</div>
@@ -518,6 +566,9 @@ $(document).ready(page_fiche_init);
 			{assign var=taxref value=$espece->get_inpn_ref()}
 			<p><a href="http://inpn.mnhn.fr/espece/cd_nom/{$taxref->cd_nom}">Visiter la fiche espèce sur le site de l'INPN</a></p>
 		{/if}
+
+		{* 2 = nb_citations valide *}
+		<p>Ce <a href="?page=definitions#gl_taxon" target="_blank">taxon</a> est cité {$espece->get_nb_citations(2)} fois dans la base de données.</p>
 	</div>
 </div>
 <div class="row onglet_fiche_espece" id="fiche_medias">
@@ -604,6 +655,17 @@ $(document).ready(page_fiche_init);
 		<div class="col-sm-4">
 			<div class="container">
 				<h4>Données</h4>
+				<div>Observations des taxons : {$espece}
+					{assign var=descendants value=$espece->taxons_descendants()}
+					{foreach from=$descendants item=child name=tds}
+						{if $smarty.foreach.tds.iteration < 100}
+							<a href="?page=fiche&id={$child->id_espece}">{$child}</a>{if $smarty.foreach.tds.iteration < $descendants->count()},{/if}
+						{/if}
+					{foreachelse}
+						seul
+					{/foreach}
+					{if $descendants->count() > 100}...{/if}
+				</div>
 				<div class="checkbox"><label><input checked type="radio" name="l" id="5ans" class="ctrl_carte">Répartition par pas de 5 ans</label></div>
 				<div class="checkbox"><label><input type="radio" name="l" id="annee" class="ctrl_carte">Répartition par année</label></div>
 				<div><a class="btn btn-primary" href="?page=kml_repartition&id={$espece->id_espece}">Télécharger les données de la carte au format KML</a></div>
