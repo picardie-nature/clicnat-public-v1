@@ -994,3 +994,7 @@ div.pas_de_carte_dispo {
 .lordre a {
 	display:block;
 }
+
+.liste_famille {
+	font-size: 12px;
+}
