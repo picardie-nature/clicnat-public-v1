@@ -69,9 +69,27 @@ var stylemap = new OpenLayers.StyleMap(new OpenLayers.Style({
 }));
 
 //{/literal}
-
-var wfs = carte_ajout_layer_wfs(m, {$liste_espace->id_liste_espace}, "{$liste_espace}", "{$liste_espace->mention}", stylemap);
-m.addLayer(wfs);
+{if $travail->sld()}
+	var url_sld = "{$travail->sld()}";
+	var idcarte = {$liste_espace->id_liste_espace};
+	var nomliste = "{$liste_espace->nom|htmlentities}";
+	var idtravail = {$travail->id_travail};
+	var mention = "{$liste_espace->mention}|htmlentities}";
+	//{literal}
+	OpenLayers.Request.GET({
+		url: url_sld,
+		success: function (req) {
+			var format = new OpenLayers.Format.SLD();
+			var sld = format.read(req.responseXML || req.responseText);
+			stylemap = new OpenLayers.StyleMap(sld.namedLayers['liste_espace_'+idcarte].userStyles[0]);
+			wfs = carte_ajout_layer_wfs(m, idcarte, nomliste, mention, stylemap);
+		}
+	});
+	//{/literal}
+{else}
+	wfs = carte_ajout_layer_wfs(m, {$liste_espace->id_liste_espace}, "{$liste_espace}", "{$liste_espace->mention}", stylemap);
+	m.addLayer(wfs);
+{/if}
 var pt = new OpenLayers.LonLat(2.80151, 49.69606);
 pt.transform(new OpenLayers.Projection(m.displayProjection), new OpenLayers.Projection(m.projection));
 m.setCenter(pt, 8);

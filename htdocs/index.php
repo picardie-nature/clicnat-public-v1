@@ -162,6 +162,20 @@ class Promontoire extends clicnat_smarty {
 		}
 		self::header_cacheable(3600*3);
 	}
+	protected function before_carte_sld() {
+		self::header_xml();
+		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
+		echo $travail->sld();
+		exit();
+	}
+
+	protected function before_sld() {
+		require_once(OBS_DIR.'sld.php');
+		$travail = clicnat_travaux::instance($this->db, $_GET['id']);
+		$sld = clicnat_sld_rampe::liste_espaces_attrs_min_max($travail->liste_espace(), "/{$_GET['c']}/",(int)$_GET['n'], $teinte=120, $saturation=0.8, $valeur=0.9, $methode="repartie");
+		echo $sld->saveXML();
+
+	}
 
 	protected function before_carte_kml() {
 		$url = sprintf("%s?action=espaces_liste_publique_kml&id_liste=%d", URL_API, $_GET['id']);
@@ -224,7 +238,7 @@ class Promontoire extends clicnat_smarty {
 		self::header_cacheable(3600*3);
 		$gf = new clicnat_wfs_get_feature($this->db, $doc);
 		$sel = $gf->get_liste_espaces();
-		if (array_search($sel->id_liste_espace, $listes_public) !== false) {
+		if ((array_search($sel->id_liste_espace, $listes_public) !== false) || $sel->ref == true) {
 			$fichier_cache = $this->espace_carte_wfs_cache_file($sel->id_liste_espace);
 			if (!file_exists($fichier_cache))
 				file_put_contents($fichier_cache, $gf->reponse()->saveXML());
