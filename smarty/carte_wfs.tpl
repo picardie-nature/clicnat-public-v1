@@ -7,19 +7,23 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-4">
 		<h3>Description</h3>
 		<p>{$travail->description|markdown}</p>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-4">
 		<h3>Attribution</h3>
 		<p>{$liste_espace} : {$liste_espace->mention}</p>
 		<h3>Téléchargement</h3>
 		<a href="?page=carte_kml&id={$liste_espace->id_liste_espace}" class="btn btn-primary">Télécharger KML</a>
 	</div>
-
+	{if $travail->sld()}
+	<div class="col-sm-4">
+		<h3>Légende</h3>
+		<div id="legende"></div>
+	</div>
+	{/if}
 </div>
-
 
 <script type="text/javascript" src="http://deco.picardie-nature.org/proj4js/lib/proj4js-compressed.js"></script>
 <script type="text/javascript" src="http://maps.picardie-nature.org/OpenLayers-2.12/OpenLayers.js"></script>
@@ -72,7 +76,7 @@ var stylemap = new OpenLayers.StyleMap(new OpenLayers.Style({
 {if $travail->sld()}
 	var url_sld = "{$travail->sld()}";
 	var idcarte = {$liste_espace->id_liste_espace};
-	var nomliste = "{$liste_espace->nom|htmlentities}";
+	var nomliste = "{$liste_espace->nom}";
 	var idtravail = {$travail->id_travail};
 	var mention = "{$liste_espace->mention}|htmlentities}";
 	//{literal}
@@ -81,7 +85,13 @@ var stylemap = new OpenLayers.StyleMap(new OpenLayers.Style({
 		success: function (req) {
 			var format = new OpenLayers.Format.SLD();
 			var sld = format.read(req.responseXML || req.responseText);
-			stylemap = new OpenLayers.StyleMap(sld.namedLayers['liste_espace_'+idcarte].userStyles[0]);
+			var s = sld.namedLayers['liste_espace_'+idcarte].userStyles[0];
+			stylemap = new OpenLayers.StyleMap(s);
+			var dl = $('#legende');
+			dl.html("");
+			for (var j=0;j<s.rules.length;j++) {
+				dl.append("<div>&nbsp;"+s.rules[j].title+"<span class='pull-left' style='background-color:"+s.rules[j].symbolizer.Polygon.fillColor+"'>&nbsp;&nbsp;&nbsp;</span></div>");
+			}
 			wfs = carte_ajout_layer_wfs(m, idcarte, nomliste, mention, stylemap);
 		}
 	});
