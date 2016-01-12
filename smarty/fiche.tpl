@@ -160,13 +160,20 @@ function layer_repartition_5ans(features) {
 
 function annees_style(y) {
 	var style = new OpenLayers.Style();
+	var f_eq = new OpenLayers.Filter.Function({
+		evaluate: function (attr) {
+			return attr.year.value === y.toString();
+		}
+	});
+	var f_eq2 = new OpenLayers.Filter.Function({
+		evaluate: function (attr) {
+			return attr.year.value != y.toString();
+		}
+	});
+
 	style.addRules([
 		new OpenLayers.Rule({
-			filter: new OpenLayers.Filter.Comparison({
-				type: OpenLayers.Filter.Comparison.EQUAL_TO,
-				property: "annee",
-				value: y
-			}),
+			filter: f_eq,	
 			symbolizer: {
 				fillOpacity:0.8,
 				fillColor: 'green',
@@ -174,26 +181,13 @@ function annees_style(y) {
 			}
 		}),
 		new OpenLayers.Rule({
-			filter: new OpenLayers.Filter.Comparison({
-				type: OpenLayers.Filter.Comparison.LESS_THAN,
-				property: "annee",
-				value: y
-			}),
+			filter: f_eq2,	
 			symbolizer: {
-				display: 'none'
-			}
-		}),
-		new OpenLayers.Rule({
-			filter: new OpenLayers.Filter.Comparison({
-				type: OpenLayers.Filter.Comparison.GREATER_THAN,
-				property: "annee",
-				value: y
-			}),
-			symbolizer: {
-				display: 'none'
+				fillOpacity:0.1,
+				fillColor: '#3e3e3e',
+				strokeWidth:0
 			}
 		})
-
 	]);
 	return style;
 }
