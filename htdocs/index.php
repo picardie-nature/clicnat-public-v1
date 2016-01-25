@@ -421,10 +421,19 @@ class Promontoire extends clicnat_smarty {
 		require_once(OBS_DIR.'wfs.php');
 		self::header_xml();
 		self::header_cacheable(3600*3);
-		$op = clicnat_wfs_op($this->db, $_GET);
+		if (isset($_GET['REQUEST'])) {
+			$args = $_GET;
+		} elseif (isset($_POST['REQUEST'])) {
+			$args = $_POST;
+		} else {
+			$data = file_get_contents('php://input'); // contenu de _POST
+			$doc = new DomDocument();
+			@$doc->loadXML($data);
+			$args = $doc;
+		}
+		$op = clicnat_wfs_op($this->db, $args);
 		echo $op->reponse()->saveXML();
 		exit();
-		
 	}
 	
 	protected function before_partenaires() {
