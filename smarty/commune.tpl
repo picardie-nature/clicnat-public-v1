@@ -22,6 +22,12 @@
 			{/if}
 		{/foreach}
 		</p>
+		{if $commune->id_pays}
+		<p>
+			{assign var=pays value=$commune->pays_statistique()}
+			<a href="https://fr.wikipedia.org/wiki/Pays_%28am%C3%A9nagement_du_territoire%29">Pays</a> : {$pays}
+		</p>
+		{/if}
 	</div>
 </div>
 <div class="row">
