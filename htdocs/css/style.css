@@ -218,9 +218,9 @@ DIV#bloc-bas {
 }
 
 #logo_cr {
-	width: 94px;
+	width: 205px;
 	height: 62px; /*124*/
-	background-image: url('http://www.picardie-nature.org/pix/picto_crp.png');
+	background-image: url('../image/hautsdefrance.png');
 }
 
 #logo_europe {

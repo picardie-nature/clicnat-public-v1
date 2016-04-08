@@ -47,7 +47,7 @@
 				<a href="http://www.developpement-durable.gouv.fr/" target="_blank"><div id="logo_dreal" class="hoverscroll"></div></a>
 			</div>
 			<div class="text-center">
-				<a href="http://www.picardie.fr/" target="_blank"><div id="logo_cr" class="hoverscroll"></div></a>
+				<a href="http://www.nordpasdecalaispicardie.fr/" target="_blank"><div id="logo_cr" class="hoverscroll"></div></a>
 			</div>
 		</div>
 		<div class="col-sm-3">
