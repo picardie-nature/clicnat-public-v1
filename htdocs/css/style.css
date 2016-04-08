@@ -242,9 +242,9 @@ DIV#bloc-bas {
 }
 
 #logo_cg02 {
-	width: 94px;
+	width: 62px;
 	height: 62px;
-	background-image: url('http://www.picardie-nature.org/pix/picto_cg02.png');
+	background-image: url('../image/picto_cg02.png');
 }
 
 #logo_cg80 {
