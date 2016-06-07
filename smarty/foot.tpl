@@ -38,7 +38,10 @@
 		</div>
 		<div class="col-sm-3">
 			<div class="text-center">
-				<a href="http://www.europa.eu" target="_blank" title="Union européenne"><div id="logo_europe" class="hoverscroll"></div></a>
+				<a class="pull-left" href="http://www.europa.eu" target="_blank" title="Union européenne"><div id="logo_europe" class="hoverscroll"></div></a>
+				<p style="padding-left: 96px;">
+					Les actions de Picardie Nature sont cofinancées par le FEDER dans le cadre du programme opérationnel FEDER-FSE pour la Picardie.
+				</p>
 			</div>
 			<div class="text-center">
 				<a href="http://www.europe-en-picardie.eu/" target="_blank" title="Union européenne"><div id="logo_europe_eng" class="hoverscroll"></div></a>
@@ -60,6 +63,14 @@
 			<div class="text-center">
 				<a href="http://www.amiens.fr" target="_blank"><div id="logo_amiens" class="hoverscroll"></div></a>
 			</div>
+			<!--
+			<div class="text-center">
+				<a href="http://www.eau-seine-normandie.fr" target="_blank"><div id="logo_eau_h" class="hoverscroll"></div></a>
+			</div>
+			<div class="text-center">
+				<a href="http://picardie.adem.fr" target="_blank"><div id="logo_adem" class="hoverscroll"></div></a>
+			</div>
+			-->
 		</div>
 		<div class="clearfix"></div>
 	</div>

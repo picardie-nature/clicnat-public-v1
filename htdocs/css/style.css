@@ -213,60 +213,7 @@ DIV#bloc-bas {
 	background-color: 	rgb(200,200,200);
 }
 
-#logos {
-	text-align: center;
-}
 
-#logo_cr {
-	width: 205px;
-	height: 62px; /*124*/
-	background-image: url('../image/hautsdefrance.png');
-}
-
-#logo_europe {
-	width: 94px;
-	height: 62px;
-	background-image: url('../image/picto_europe.png');
-}
-
-#logo_europe_eng {
-	width: 128px;
-	height: 80px;
-	background-image: url('../image/picto_europe_eng.png');
-}
-
-#logo_dreal {
-	width: 94px;
-	height: 62px;
-	background-image: url('http://www.picardie-nature.org/pix/picto_minec.png');
-}
-
-#logo_cg02 {
-	width: 62px;
-	height: 62px;
-	background-image: url('../image/picto_cg02.png');
-}
-
-#logo_cg80 {
-	width: 62px;
-	height: 62px;
-	background-image: url('../image/picto_cg80.png');
-}
-
-#logo_amiens {
-	width: 94px;
-	height: 62px;
-	background-image: url('http://www.picardie-nature.org/pix/picto_am.png');
-}
-
-.hoverscroll {
-	display:inline-block;
-	background-position: 0% 100%;
-}
-
-.hoverscroll:hover {
-	background-position: 0% 0%;
-}
 
 .directive {margin-bottom: 1px;}
 .valeur {margin-top: 1px;}
