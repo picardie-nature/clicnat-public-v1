@@ -57,6 +57,11 @@
 			<div class="text-center">
 				<a href="http://www.cg02.fr" target="_blank"><div id="logo_cg02" class="hoverscroll"></div></a>
 			</div>
+			<!--
+			<div class="text-center">
+				<a href="http://www.oise.fr" target="_blank"><div id="logo_cg60" class="hoverscroll"></div></a>
+			</div>
+			-->
 			<div class="text-center">
 				<a href="http://www.cg80.fr" target="_blank"><div id="logo_cg80" class="hoverscroll"></div></a>
 			</div>
