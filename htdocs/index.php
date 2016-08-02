@@ -492,14 +492,17 @@ class Promontoire extends clicnat_smarty {
 				throw new Exception('guid');
 
 			require_once(OBS_DIR.'sinp.php');
+			$flou = true;
 
-			$citation = bobs_citation::by_guid($this->db, $_GET['guid']);
+			$citation = clicnat_citation_export_sinp::by_guid($this->db, $_GET['guid']);
+			if ($citation->est_une_donnee_biblio())
+				$flou = false;
+
 			$doc = new DOMDocument('1.0','utf-8');
 			$doc->formatOutput = true;
 			$root = $doc->createElement("Collection");
 			$root->setAttributeNs(GML_NS_URL, 'gml:id', "root");
-			$c_sinp = new clicnat_citation_export_sinp($this->db, $citation->id_citation);
-			$root->appendChild($c_sinp->occurence($doc,true));
+			$root->appendChild($citation->occurence($doc, $flou));
 			$doc->appendChild($root);
 			echo $doc->saveXML();
 			exit();
