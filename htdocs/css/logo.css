@@ -3,9 +3,10 @@
 }
 
 #logo_cr {
-	width: 205px;
-	height: 62px; /*124*/
-	background-image: url('../image/hautsdefrance.png');
+	width: 100px;
+	height: 100px; /*124*/
+	background-image: url('../image/hautsdefrance_v2.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_europe {
@@ -19,48 +20,56 @@
 	width: 128px;
 	height: 80px;
 	background-image: url('../image/picto_europe_eng.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_dreal {
 	width: 94px;
 	height: 62px;
 	background-image: url('http://www.picardie-nature.org/pix/picto_minec.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_cg02 {
 	width: 62px;
 	height: 62px;
 	background-image: url('../image/picto_cg02.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_cg60 {
 	width: 62px;
 	height: 72px;
 	background-image: url('../image/picto_cg60.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_cg80 {
 	width: 62px;
 	height: 62px;
 	background-image: url('../image/picto_cg80.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_amiens {
 	width: 94px;
 	height: 62px;
 	background-image: url('http://www.picardie-nature.org/pix/picto_am.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_eau_h {
 	width: 128px;
 	height: 61px;
 	background-image: url('../image/picto_agence_eau_h.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_adem {
 	width: 62px;
 	height: 67px;
 	background-image: url('../image/picto_adem.png');
+	background-position: 0% 0% !important;
 }
 
 .hoverscroll {
