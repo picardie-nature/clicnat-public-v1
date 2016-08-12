@@ -12,6 +12,7 @@
 	width: 94px;
 	height: 62px;
 	background-image: url('../image/picto_europe.png');
+	background-position: 0% 0% !important;
 }
 
 #logo_europe_eng {
