@@ -488,10 +488,17 @@ class Promontoire extends clicnat_smarty {
 		 */
 		try {
 			self::header_xml();
+			echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 			if (!isset($_GET['guid']))
 				throw new Exception('guid');
 
 			require_once(OBS_DIR.'sinp.php');
+
+			$citation = clicnat_citation_export_sinp::by_guid($this->db, $_GET['guid']);
+			$dee = $citation->dee();
+			echo $dee;
+		
+/*
 			$flou = true;
 
 			$citation = clicnat_citation_export_sinp::by_guid($this->db, $_GET['guid']);
@@ -500,11 +507,18 @@ class Promontoire extends clicnat_smarty {
 
 			$doc = new DOMDocument('1.0','utf-8');
 			$doc->formatOutput = true;
-			$root = $doc->createElement("Collection");
+			$root = $doc->createElementNS("http://www.opengis.net/gml/3.2","gml:FeatureCollection");
 			$root->setAttributeNs(GML_NS_URL, 'gml:id', "root");
+
+			$boundedby = $doc->createElementNS("http://www.opengis.net/gml/3.2","gml:boundedBy");
+			$boundedby->setAttributeNS("http://www.w3.org/2001/XMLSchema-instance","xsi:nil","true");
+			$boundedby->setAttribute("nilReason", "inapplicable");
+			$root->appendChild($boundedby);
+
 			$root->appendChild($citation->occurence($doc, $flou));
 			$doc->appendChild($root);
-			echo $doc->saveXML();
+
+			echo $doc->saveXML();*/
 			exit();
 		} catch (Exception $e) {
 			self::header_404();
