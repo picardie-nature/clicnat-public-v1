@@ -4,6 +4,8 @@
 <script type="text/javascript" src="http://maps.picardie-nature.org/carto.js"></script>
 {assign var=espece_inpn value=$espece->get_inpn_ref()}
 {assign var=referentiel value=$espece->get_referentiel_regional()}
+{assign var=statuts value=$espece->statut_regional()}
+
 {literal}
 <style>
 div.onglet_fiche_espece {
@@ -508,51 +510,38 @@ $(document).ready(page_fiche_init);
 
 	<div class="col-sm-3">
 		<h3>Statut</h3>
-		{if $referentiel}
-		<table class="table">
-			{if $referentiel.statut_origine}
+		{if $statuts}
+			{literal}
+			<style>
+			.vc {
+				text-align: center;
+			}
+			</style>
+			{/literal}
+			<table class="table">
 				<tr>
-					<td>Statut d'origine</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_org">{$referentiel.statut_origine}</a></td>
+					<th class="vc">Menace</th>
+					<th class="vc">Rareté</th>
+					<th title="Année de publication des statuts">Année</th>
 				</tr>
-			{/if}
-			{if $referentiel.statut_bio}
-				<tr>
-					<td>Statut biologique</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_bio">{$referentiel.statut_bio}</a></td>
-				</tr>
-			{/if}
-			{if $referentiel.indice_rar}
-				<tr>
-					<td>Indice de rareté</td>
-					<td><a target="_blank" href="?page=definitions#gl_indice_rare">{$espece->get_indice_rar_lib($referentiel.indice_rar)}</a></td>
-				</tr>
-			{/if}
-			{if $referentiel.niveau_con}
-				<tr>
-					<td>Niveau de connaissance</td>
-					<td><a target="_blank" href="?page=definitions#gl_niveau_conn">{$referentiel.niveau_con}</a></td>
-				</tr>
-			{/if}
-			{if $referentiel.categorie}
-				<tr>
-					<td>Degré de menace</td>
-					<td><a target="_blank" href="?page=definitions#gl_statut_menace">{$espece->get_degre_menace_lib($referentiel.categorie)}</a></td>
-				</tr>
-			{/if}
-			{if $referentiel.etat_conv}
-				<tr>
-					<td>État de conservation</td>
-					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.etat_conv}</a></td>
-				</tr>
-			{/if}
-			{if $referentiel.prio_conv_cat}
-				<tr>
-					<td>Priorité de conservation</td>
-					<td><a target="_blank" href="?page=definitions#gl_etat_pri_conv">{$referentiel.prio_conv_cat}</a></td>
-				</tr>
-			{/if}
-		</table>
+				{foreach from=$statuts item=statut}
+					{assign var=rlib value=$espece->get_indice_rar_lib($statut.rarete)}
+					{assign var=rmen value=$espece->get_degre_menace_lib($statut.menace)}
+					<tr>
+						<td class="vc rarete{$statut.rarete}">
+							<h3>{$statut.rarete}</h3>
+							<small>{$rlib}</small>
+						</td>
+						<td class="vc menace{$statut.menace}">
+							<h3>{$statut.menace}</h3>
+							<small>{$rmen}</small>
+						</td>
+						<td class="vc">
+							<h3>{$statut.annee_publi}</h3>
+						</td>
+					</tr>
+				{/foreach}
+			</table>
 		{else}
 			Ce <a target="_blank" href="?page=definitions#gl_taxon">taxon</a> n'a pas été évalué.
 		{/if}
