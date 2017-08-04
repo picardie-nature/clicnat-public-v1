@@ -525,8 +525,10 @@ $(document).ready(page_fiche_init);
 					<th title="Année de publication des statuts">Année</th>
 				</tr>
 				{foreach from=$statuts item=statut}
-					{assign var=rlib value=$espece->get_indice_rar_lib($statut.rarete)}
-					{assign var=rmen value=$espece->get_degre_menace_lib($statut.menace)}
+					{assign var=rlib value=""}
+					{assign var=rmen value=""}
+					{if $statut.rarete} {assign var=rlib value=$espece->get_indice_rar_lib($statut.rarete)} {/if}
+					{if $statut.menace} {assign var=rmen value=$espece->get_degre_menace_lib($statut.menace)} {/if}
 					<tr>
 						<td class="vc rarete{$statut.rarete}">
 							<h3>{$statut.rarete}</h3>
