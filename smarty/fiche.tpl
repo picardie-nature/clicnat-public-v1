@@ -520,8 +520,8 @@ $(document).ready(page_fiche_init);
 			{/literal}
 			<table class="table">
 				<tr>
-					<th class="vc">Menace</th>
 					<th class="vc">Rareté</th>
+					<th class="vc">Menace</th>
 					<th title="Année de publication des statuts">Année</th>
 				</tr>
 				{foreach from=$statuts item=statut}
