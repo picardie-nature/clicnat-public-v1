@@ -4,7 +4,7 @@
 		<h1>Clicnat : La faune sauvage en un clic pour tous les Picards</h1>
 		{texte nom="promontoire_accueil_1"}
 		<div class="alert alert-info" role="alert">
-			<strong>Clicnat évolue ! </strong>Découvrez dès à présent notre <ins><a href="https://clicnat.fr">nouveau site public</a></ins>
+			<strong>Clicnat évolue ! </strong>Découvrez dès à présent notre <ins><a href="https://new.clicnat.fr">nouveau site public</a></ins>
 		</div>
 	</div>
 </div>
